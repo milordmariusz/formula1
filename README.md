@@ -1,16 +1,29 @@
-# formula1
+# Formula 1
 
-A new Flutter project.
+Formula 1 is a visual matematical formulas editor, which allows you to create your own formulas. Moreover you can export and import formulas from MathML and LateX.
 
-## Getting Started
+# Tech and non-tech stack
 
-This project is a starting point for a Flutter application.
+- Flutter
+- Android Studio
+- Flutter Packages:
+-- https://pub.dev/packages/katex_flutter
+-- https://pub.dev/packages/math_keyboard
+- Trello: https://trello.com/b/RCh8inTw/projekt-io
 
-A few resources to get you started if this is your first Flutter project:
+## Contributors
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+- https://github.com/milordmariusz
+- https://github.com/Streyter
+- https://github.com/ArekStencel
+- https://github.com/pabasroka
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Application views
+
+ss
+
+## Features
+
+Import and export from MathML
+View with list of mathematical formulas grouped by few categories
+View with formula editor  
