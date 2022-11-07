@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formula1/src/style/color_palette.dart';
 
 void main() {
   runApp(const ExampleApp());
@@ -12,8 +13,9 @@ class ExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Math Keyboard Demo',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+          primarySwatch: ColorPalette.orangeMaterialColor,
+          primaryColor: ColorPalette.darkGrey,
+          brightness: Brightness.dark),
       home: const DemoPage(),
     );
   }
@@ -29,14 +31,18 @@ class DemoPage extends StatefulWidget {
 class _DemoPageState extends State<DemoPage> {
   @override
   Widget build(BuildContext context) {
-    const upperTab = SafeArea(
+    final upperTab = SafeArea(
       child: Padding(
         padding: EdgeInsets.only(top: 10),
-        child: TabBar(tabs: <Tab>[
-          Tab(icon: Icon(Icons.filter_9_plus_outlined)),
-          Tab(icon: Icon(Icons.book)),
-          Tab(icon: Icon(Icons.settings)),
-        ]),
+        child: TabBar(
+            indicatorColor: ColorPalette.orange,
+            labelColor: ColorPalette.orange,
+            unselectedLabelColor: ColorPalette.lightGrey,
+            tabs: <Tab>[
+              Tab(icon: Icon(Icons.calculate)),
+              Tab(icon: Icon(Icons.book)),
+              Tab(icon: Icon(Icons.settings)),
+            ]),
       ),
     );
 
@@ -45,6 +51,7 @@ class _DemoPageState extends State<DemoPage> {
       child: Scaffold(
         appBar: AppBar(
           flexibleSpace: upperTab,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: TabBarView(
           children: [
@@ -85,13 +92,21 @@ class _MathFieldTextFieldExample extends StatelessWidget {
               SizedBox(
                 child: TextButton(
                   onPressed: () {},
-                  child: const Icon(size: 100,color: Colors.black, Icons.delete_forever),
+                  child: Icon(
+                    size: 100,
+                    color: ColorPalette.lightGrey,
+                    Icons.delete_forever,
+                  ),
                 ),
               ),
               SizedBox(
                 child: TextButton(
                   onPressed: () {},
-                  child: const Icon(size: 100,color: Colors.black, Icons.add),
+                  child: Icon(
+                    size: 100,
+                    color: ColorPalette.lightGrey,
+                    Icons.add_box,
+                  ),
                 ),
               ),
             ],
