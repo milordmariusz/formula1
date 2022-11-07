@@ -7,11 +7,8 @@ class ColorPalette {
   static const int _blackValue = 0xff000000;
 
   static Color get lightGrey => const Color(_lightGreyValue);
-
   static Color get darkGrey => const Color(_darkGreyValue);
-
   static Color get orange => const Color(_orangeValue);
-
   static Color get black => const Color(_blackValue);
 
   static MaterialColor lightGreyMaterialColor = createMaterialColor(lightGrey);
