@@ -91,6 +91,13 @@ class _MathFieldTextFieldExample extends StatelessWidget {
             children: [
               SizedBox(
                 child: TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                  ),
                   onPressed: () {},
                   child: Icon(
                     size: 100,
@@ -101,6 +108,13 @@ class _MathFieldTextFieldExample extends StatelessWidget {
               ),
               SizedBox(
                 child: TextButton(
+                  style: ButtonStyle(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0),
+                      ),
+                    ),
+                  ),
                   onPressed: () {},
                   child: Icon(
                     size: 100,
@@ -148,13 +162,20 @@ class _MathEquationsDataBase extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
+      padding: EdgeInsets.only(top: 35),
       itemCount: equationsList.length,
       itemBuilder: (context, index) {
         return Padding(
-          padding: const EdgeInsets.all(8),
+          padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
           child: Container(
             decoration: BoxDecoration(
-                color: Colors.grey.shade400,
+                boxShadow: [
+                  BoxShadow(
+                      color: ColorPalette.blackMaterialColor.shade400,
+                      blurRadius: 25.0,
+                      offset: Offset(0, 10))
+                ],
+                color: ColorPalette.lightGreyMaterialColor.shade200,
                 borderRadius: const BorderRadius.all(Radius.circular(20))),
             width: double.infinity,
             height: 150,
@@ -162,8 +183,8 @@ class _MathEquationsDataBase extends StatelessWidget {
               alignment: const Alignment(-0.9, 0),
               child: Text(
                 equationsList[index],
-                style: const TextStyle(
-                  color: Colors.white,
+                style: TextStyle(
+                  color: ColorPalette.black,
                   fontSize: 30,
                 ),
               ),
