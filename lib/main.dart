@@ -87,67 +87,72 @@ class _MathFieldTextFieldExampleState extends State<MathFieldTextFieldExample> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text("Strona do edycji równań"),
-          const SizedBox(
-            height: 50,
-          ),
-          Container(
-            height: 100,
-            margin: const EdgeInsets.all(30),
-            child: TextField(
-              controller: _textController,
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const SizedBox(
+              height: 20,
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              SizedBox(
-                child: TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
+            const Text("Strona do edycji równań"),
+            const SizedBox(
+              height: 50,
+            ),
+            Container(
+              height: 100,
+              margin: const EdgeInsets.all(30),
+              child: TextField(
+                controller: _textController,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  child: TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
                       ),
                     ),
-                  ),
-                  onPressed: () {
-                    clearMathFormula();
-                  },
-                  child: Icon(
-                    size: 100,
-                    color: ColorPalette.lightGrey,
-                    Icons.delete_forever,
-                  ),
-                ),
-              ),
-              SizedBox(
-                child: TextButton(
-                  style: ButtonStyle(
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0),
-                      ),
+                    onPressed: () {
+                      clearMathFormula();
+                    },
+                    child: Icon(
+                      size: 100,
+                      color: ColorPalette.lightGrey,
+                      Icons.delete_forever,
                     ),
                   ),
-                  onPressed: () {
-                    addMathFormula();
-                  },
-                  child: Icon(
-                    size: 100,
-                    color: ColorPalette.lightGrey,
-                    Icons.add_box,
+                ),
+                SizedBox(
+                  child: TextButton(
+                    style: ButtonStyle(
+                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(18.0),
+                        ),
+                      ),
+                    ),
+                    onPressed: () {
+                      addMathFormula();
+                    },
+                    child: Icon(
+                      size: 100,
+                      color: ColorPalette.lightGrey,
+                      Icons.add_box,
+                    ),
                   ),
                 ),
-              ),
-            ],
-          )
-        ],
+              ],
+            )
+          ],
+        ),
       ),
     );
   }
