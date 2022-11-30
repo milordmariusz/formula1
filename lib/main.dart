@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/style/color_palette.dart';
 
 void main() {
@@ -13,9 +14,11 @@ class ExampleApp extends StatelessWidget {
     return MaterialApp(
       title: 'Math Keyboard Demo',
       theme: ThemeData(
-          primarySwatch: ColorPalette.orangeMaterialColor,
-          primaryColor: ColorPalette.darkGrey,
-          brightness: Brightness.dark),
+        primarySwatch: ColorPalette.orangeMaterialColor,
+        primaryColor: ColorPalette.darkGrey,
+        brightness: Brightness.dark,
+        accentColor: ColorPalette.orange,
+      ),
       home: const DemoPage(),
     );
   }
@@ -55,7 +58,7 @@ class _DemoPageState extends State<DemoPage> {
         ),
         body: TabBarView(
           children: [
-            const _MathFieldTextFieldExample(),
+            const MathFieldTextFieldExample(),
             _MathEquationsDataBase(),
             const _ClearableAutofocusExample(),
           ],
@@ -65,8 +68,21 @@ class _DemoPageState extends State<DemoPage> {
   }
 }
 
-class _MathFieldTextFieldExample extends StatelessWidget {
-  const _MathFieldTextFieldExample({Key? key}) : super(key: key);
+class MathFieldTextFieldExample extends StatefulWidget {
+  const MathFieldTextFieldExample({super.key});
+
+  @override
+  State<StatefulWidget> createState() => _MathFieldTextFieldExampleState();
+}
+
+class _MathFieldTextFieldExampleState extends State<MathFieldTextFieldExample> {
+  final _textController = TextEditingController();
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +101,9 @@ class _MathFieldTextFieldExample extends StatelessWidget {
             Container(
               height: 100,
               margin: const EdgeInsets.all(30),
-              child: const TextField(),
+              child: TextField(
+                controller: _textController,
+              ),
             ),
             const SizedBox(
               height: 20,
@@ -102,7 +120,9 @@ class _MathFieldTextFieldExample extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      clearMathFormula();
+                    },
                     child: Icon(
                       size: 100,
                       color: ColorPalette.lightGrey,
@@ -119,7 +139,9 @@ class _MathFieldTextFieldExample extends StatelessWidget {
                         ),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      addMathFormula();
+                    },
                     child: Icon(
                       size: 100,
                       color: ColorPalette.lightGrey,
@@ -134,6 +156,16 @@ class _MathFieldTextFieldExample extends StatelessWidget {
       ),
     );
   }
+
+  void addMathFormula() {
+    if (_textController.text != '') {
+      MathFormulas().add(mathFormula: _textController.text);
+    }
+  }
+
+  void clearMathFormula() {
+    _textController.text = '';
+  }
 }
 
 class _MathEquationsDataBase extends StatelessWidget {
@@ -141,62 +173,46 @@ class _MathEquationsDataBase extends StatelessWidget {
     Key? key,
   }) : super(key: key);
 
-  final equationsList = [
-    "Równanie: 1",
-    "Równanie: 2",
-    "Równanie: 3",
-    "Równanie: 4",
-    "Równanie: 5",
-    "Równanie: 6",
-    "Równanie: 7",
-    "Równanie: 8",
-    "Równanie: 9",
-    "Równanie: 10",
-    "Równanie: 11",
-    "Równanie: 12",
-    "Równanie: 13",
-    "Równanie: 14",
-    "Równanie: 15",
-    "Równanie: 16",
-    "Równanie: 17",
-    "Równanie: 18",
-    "Równanie: 19",
-    "Równanie: 20",
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      padding: EdgeInsets.only(top: 35),
-      itemCount: equationsList.length,
-      itemBuilder: (context, index) {
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
-          child: Container(
-            decoration: BoxDecoration(
-                boxShadow: [
-                  BoxShadow(
-                      color: ColorPalette.blackMaterialColor.shade400,
-                      blurRadius: 25.0,
-                      offset: Offset(0, 10))
-                ],
-                color: ColorPalette.lightGreyMaterialColor.shade200,
-                borderRadius: const BorderRadius.all(Radius.circular(20))),
-            width: double.infinity,
-            height: 150,
-            child: Align(
-              alignment: const Alignment(-0.9, 0),
-              child: Text(
-                equationsList[index],
-                style: TextStyle(
-                  color: ColorPalette.black,
-                  fontSize: 30,
+    return ValueListenableBuilder(
+      valueListenable: MathFormulas(),
+      builder: (mathFormula, value, child) {
+        final mathFormulas = value;
+        return ListView.builder(
+          padding: EdgeInsets.only(top: 35),
+          itemCount: mathFormulas.length,
+          itemBuilder: (context, index) {
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+              child: Container(
+                decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: ColorPalette.blackMaterialColor.shade400,
+                          blurRadius: 25.0,
+                          offset: const Offset(0, 10))
+                    ],
+                    color: ColorPalette.lightGreyMaterialColor.shade200,
+                    borderRadius: const BorderRadius.all(Radius.circular(20))),
+                width: double.infinity,
+                height: 150,
+                child: Align(
+                  alignment: const Alignment(-0.9, 0),
+                  child: Text(
+                    mathFormulas[index],
+                    style: TextStyle(
+                      color: ColorPalette.black,
+                      fontSize: 30,
+                    ),
+                  ),
                 ),
               ),
-            ),
-          ),
+            );
+          },
         );
       },
+      // child:
     );
   }
 }
