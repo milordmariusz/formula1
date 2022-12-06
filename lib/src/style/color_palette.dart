@@ -5,16 +5,19 @@ class ColorPalette {
   static const int _darkGreyValue = 0xff505050;
   static const int _orangeValue = 0xffff9100;
   static const int _blackValue = 0xff000000;
+  static const int _whiteValue = 0xffffffff;
 
   static Color get lightGrey => const Color(_lightGreyValue);
   static Color get darkGrey => const Color(_darkGreyValue);
   static Color get orange => const Color(_orangeValue);
   static Color get black => const Color(_blackValue);
+  static Color get white => const Color(_whiteValue);
 
   static MaterialColor lightGreyMaterialColor = createMaterialColor(lightGrey);
   static MaterialColor darkGreyMaterialColor = createMaterialColor(darkGrey);
   static MaterialColor orangeMaterialColor = createMaterialColor(orange);
   static MaterialColor blackMaterialColor = createMaterialColor(black);
+  static MaterialColor whiteMaterialColor = createMaterialColor(white);
 
   static MaterialColor createMaterialColor(Color color) {
     List strengths = <double>[.05];

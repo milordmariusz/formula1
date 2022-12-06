@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/style/color_palette.dart';
 
@@ -12,70 +13,25 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Math Keyboard Demo',
+      title: 'Formula 1',
       theme: ThemeData(
         primarySwatch: ColorPalette.orangeMaterialColor,
         primaryColor: ColorPalette.darkGrey,
         brightness: Brightness.dark,
-        accentColor: ColorPalette.orange,
       ),
-      home: const DemoPage(),
+      home: const EditMathEquationsPage(),
     );
   }
 }
 
-class DemoPage extends StatefulWidget {
-  const DemoPage({Key? key}) : super(key: key);
+class EditMathEquationsPage extends StatefulWidget {
+  const EditMathEquationsPage({super.key});
 
   @override
-  _DemoPageState createState() => _DemoPageState();
+  State<StatefulWidget> createState() => _EditMathEquationsPageState();
 }
 
-class _DemoPageState extends State<DemoPage> {
-  @override
-  Widget build(BuildContext context) {
-    final upperTab = SafeArea(
-      child: Padding(
-        padding: EdgeInsets.only(top: 10),
-        child: TabBar(
-            indicatorColor: ColorPalette.orange,
-            labelColor: ColorPalette.orange,
-            unselectedLabelColor: ColorPalette.lightGrey,
-            tabs: <Tab>[
-              Tab(icon: Icon(Icons.calculate)),
-              Tab(icon: Icon(Icons.book)),
-              Tab(icon: Icon(Icons.settings)),
-            ]),
-      ),
-    );
-
-    return DefaultTabController(
-      length: 3,
-      child: Scaffold(
-        appBar: AppBar(
-          flexibleSpace: upperTab,
-          backgroundColor: Theme.of(context).primaryColor,
-        ),
-        body: TabBarView(
-          children: [
-            const MathFieldTextFieldExample(),
-            _MathEquationsDataBase(),
-            const _ClearableAutofocusExample(),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class MathFieldTextFieldExample extends StatefulWidget {
-  const MathFieldTextFieldExample({super.key});
-
-  @override
-  State<StatefulWidget> createState() => _MathFieldTextFieldExampleState();
-}
-
-class _MathFieldTextFieldExampleState extends State<MathFieldTextFieldExample> {
+class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
   final _textController = TextEditingController();
 
   @override
@@ -86,8 +42,12 @@ class _MathFieldTextFieldExampleState extends State<MathFieldTextFieldExample> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Edycja Równań')),
+      drawer: const NavigationDrawer(
+        selectedPage: 0,
+      ),
+      body: SingleChildScrollView(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -168,65 +128,72 @@ class _MathFieldTextFieldExampleState extends State<MathFieldTextFieldExample> {
   }
 }
 
-class _MathEquationsDataBase extends StatelessWidget {
-  _MathEquationsDataBase({
+
+
+class MathEquationsDataBasePage extends StatelessWidget {
+  const MathEquationsDataBasePage({
     Key? key,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
-      valueListenable: MathFormulas(),
-      builder: (mathFormula, value, child) {
-        final mathFormulas = value;
-        return ListView.builder(
-          padding: EdgeInsets.only(top: 35),
-          itemCount: mathFormulas.length,
-          itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
-              child: Container(
-                decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: ColorPalette.blackMaterialColor.shade400,
-                          blurRadius: 25.0,
-                          offset: const Offset(0, 10))
-                    ],
-                    color: ColorPalette.lightGreyMaterialColor.shade200,
-                    borderRadius: const BorderRadius.all(Radius.circular(20))),
-                width: double.infinity,
-                height: 150,
-                child: Align(
-                  alignment: const Alignment(-0.9, 0),
-                  child: Text(
-                    mathFormulas[index],
-                    style: TextStyle(
-                      color: ColorPalette.black,
-                      fontSize: 30,
+    return Scaffold(
+      appBar: AppBar(title: const Text('Baza Równań')),
+      drawer: const NavigationDrawer(
+        selectedPage: 1,
+      ),
+      body: ValueListenableBuilder(
+        valueListenable: MathFormulas(),
+        builder: (mathFormula, value, child) {
+          final mathFormulas = value;
+          return ListView.builder(
+            padding: const EdgeInsets.only(top: 35),
+            itemCount: mathFormulas.length,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+                child: Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                            color: ColorPalette.blackMaterialColor.shade400,
+                            blurRadius: 25.0,
+                            offset: const Offset(0, 10))
+                      ],
+                      color: ColorPalette.lightGreyMaterialColor.shade200,
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(20))),
+                  width: double.infinity,
+                  height: 150,
+                  child: Align(
+                    alignment: const Alignment(-0.9, 0),
+                    child: Text(
+                      mathFormulas[index],
+                      style: TextStyle(
+                        color: ColorPalette.black,
+                        fontSize: 30,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            );
-          },
-        );
-      },
-      // child:
+              );
+            },
+          );
+        },
+        // child:
+      ),
     );
   }
 }
 
-class _ClearableAutofocusExample extends StatefulWidget {
-  const _ClearableAutofocusExample({Key? key}) : super(key: key);
+class SettingsPage extends StatefulWidget {
+  const SettingsPage({Key? key}) : super(key: key);
 
   @override
-  _ClearableAutofocusExampleState createState() =>
-      _ClearableAutofocusExampleState();
+  State<StatefulWidget> createState() => _SettingsPageState();
 }
 
-class _ClearableAutofocusExampleState
-    extends State<_ClearableAutofocusExample> {
+class _SettingsPageState extends State<SettingsPage> {
   late final _controller = TextEditingController();
 
   @override
@@ -237,8 +204,12 @@ class _ClearableAutofocusExampleState
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Center(
+    return Scaffold(
+      appBar: AppBar(title: const Text('Ustawienia')),
+      drawer: const NavigationDrawer(
+        selectedPage: 2,
+      ),
+      body: const Center(
         child: Text(
           "Tutaj będą ustawienia aplikacji",
         ),
