@@ -128,8 +128,6 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
   }
 }
 
-
-
 class MathEquationsDataBasePage extends StatelessWidget {
   const MathEquationsDataBasePage({
     Key? key,
@@ -205,15 +203,62 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Ustawienia')),
-      drawer: const NavigationDrawer(
-        selectedPage: 2,
-      ),
-      body: const Center(
-        child: Text(
-          "Tutaj będą ustawienia aplikacji",
+        appBar: AppBar(title: const Text('Ustawienia')),
+        drawer: const NavigationDrawer(
+          selectedPage: 2,
         ),
-      ),
-    );
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.all(20.0),
+                color: ColorPalette.darkGrey,
+                padding: const EdgeInsets.all(15.0),
+                child: const Align(
+                    alignment: Alignment.topCenter,
+                    child: Text.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: 'USTAWIENIA\n\n.',
+                            style: TextStyle(fontSize: 28))
+                      ]),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.clip,
+                    )),
+              ),
+              Container(
+                width: MediaQuery.of(context).size.width,
+                margin: const EdgeInsets.all(25.0),
+                color: ColorPalette.darkGrey,
+                padding: const EdgeInsets.all(20.0),
+                child: const Align(
+                    alignment: Alignment.topCenter,
+                    child: Text.rich(
+                      TextSpan(children: [
+                        TextSpan(
+                            text: 'O APLIKACJI:\n\n',
+                            style: TextStyle(fontSize: 28)),
+                        TextSpan(
+                            text:
+                                'Edytor wzorów matematycznych: wizualna edycja wzorów dostosowana do urządzeń dotykowych, biblioteka wzorów, eksport wyniku do MathML i LaTeX, import z formatu własnego lub MathML, kategoryzacja wzorów, przygotowanie bazy testowej.'
+                                '\n\n\n\n',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                        TextSpan(
+                            text: 'TWÓRCY:\n\n',
+                            style: TextStyle(fontSize: 28)),
+                        TextSpan(
+                            text: 'Mariusz Wróbel, Patryk Sroczyński,\n'
+                                'Arkadiusz Stencel, Dawid Strzyż',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ]),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.clip,
+                    )),
+              ),
+            ],
+          ),
+        ));
   }
 }
