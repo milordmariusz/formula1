@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
+import 'package:formula1/src/strings/strings.dart';
 import 'package:formula1/src/style/color_palette.dart';
 
 void main() {
@@ -13,7 +14,7 @@ class ExampleApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Formula 1',
+      title: Strings.appTitle,
       theme: ThemeData(
         primarySwatch: ColorPalette.orangeMaterialColor,
         primaryColor: ColorPalette.darkGrey,
@@ -43,7 +44,7 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Edycja Równań')),
+      appBar: AppBar(title: const Text(Strings.editMathEquationPageTitle)),
       drawer: const NavigationDrawer(
         selectedPage: 0,
       ),
@@ -54,7 +55,7 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
             const SizedBox(
               height: 20,
             ),
-            const Text("Strona do edycji równań"),
+            const Text(Strings.editMathEquationPageSubTitle),
             const SizedBox(
               height: 50,
             ),
@@ -136,7 +137,7 @@ class MathEquationsDataBasePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Baza Równań')),
+      appBar: AppBar(title: const Text(Strings.mathEquationDataBasePageTitle)),
       drawer: const NavigationDrawer(
         selectedPage: 1,
       ),
@@ -203,62 +204,91 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(title: const Text('Ustawienia')),
-        drawer: const NavigationDrawer(
-          selectedPage: 2,
+      appBar: AppBar(title: const Text(Strings.settingsPageTitle)),
+      drawer: const NavigationDrawer(
+        selectedPage: 2,
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.all(20.0),
+              color: ColorPalette.darkGrey,
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: const [
+                  Text(
+                    Strings.settingsPageTitle,
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  SizedBox(
+                    height: 56,
+                  ),
+                  Text(
+                    Strings.settingsPagePlaceHolder,
+                    style: TextStyle(fontSize: 28),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              width: MediaQuery.of(context).size.width,
+              margin: const EdgeInsets.all(25.0),
+              color: ColorPalette.darkGrey,
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                children: [
+                  const Text(
+                    Strings.abutApplication,
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  const Text(
+                    Strings.applicationDescription,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  const Text(
+                    Strings.authors,
+                    style: TextStyle(fontSize: 28),
+                  ),
+                  Column(
+                    children: const [
+                      Text(
+                        Strings.mariuszNameSurname,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        Strings.patrykNameSurname,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        Strings.arkadiuszNameSurname,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        Strings.dawidNameSurname,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontWeight: FontWeight.bold),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+            ),
+          ],
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.all(20.0),
-                color: ColorPalette.darkGrey,
-                padding: const EdgeInsets.all(15.0),
-                child: const Align(
-                    alignment: Alignment.topCenter,
-                    child: Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                            text: 'USTAWIENIA\n\n.',
-                            style: TextStyle(fontSize: 28))
-                      ]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.clip,
-                    )),
-              ),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.all(25.0),
-                color: ColorPalette.darkGrey,
-                padding: const EdgeInsets.all(20.0),
-                child: const Align(
-                    alignment: Alignment.topCenter,
-                    child: Text.rich(
-                      TextSpan(children: [
-                        TextSpan(
-                            text: 'O APLIKACJI:\n\n',
-                            style: TextStyle(fontSize: 28)),
-                        TextSpan(
-                            text:
-                                'Edytor wzorów matematycznych: wizualna edycja wzorów dostosowana do urządzeń dotykowych, biblioteka wzorów, eksport wyniku do MathML i LaTeX, import z formatu własnego lub MathML, kategoryzacja wzorów, przygotowanie bazy testowej.'
-                                '\n\n\n\n',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                        TextSpan(
-                            text: 'TWÓRCY:\n\n',
-                            style: TextStyle(fontSize: 28)),
-                        TextSpan(
-                            text: 'Mariusz Wróbel, Patryk Sroczyński,\n'
-                                'Arkadiusz Stencel, Dawid Strzyż',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
-                      ]),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.clip,
-                    )),
-              ),
-            ],
-          ),
-        ));
+      ),
+    );
   }
 }
