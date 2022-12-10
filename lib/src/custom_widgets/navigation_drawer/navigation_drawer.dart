@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:formula1/src/strings/strings.dart';
 import 'package:formula1/src/style/color_palette.dart';
 
 import 'navigation_drawer_tile.dart';
@@ -21,22 +22,22 @@ class NavigationDrawer extends StatelessWidget {
             decoration: BoxDecoration(
               color: ColorPalette.orange,
             ),
-            child: const Text('Formuła 1'),
+            child: const Text(Strings.appTitle),
           ),
           NavigationDrawerTile(
             selectedPage: selectedPage,
             tileIndex: 0,
-            tileTitle: "Edycja równań",
+            tileTitle: Strings.editMathEquationPageTitle,
           ),
           NavigationDrawerTile(
             selectedPage: selectedPage,
             tileIndex: 1,
-            tileTitle: "Baza danych",
+            tileTitle: Strings.mathEquationDataBasePageTitle,
           ),
           NavigationDrawerTile(
             selectedPage: selectedPage,
             tileIndex: 2,
-            tileTitle: "Ustawienia",
+            tileTitle: Strings.settingsPageTitle,
           ),
         ],
       ),
