@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:formula1/main.dart';
+import 'package:formula1/src/pages/edit_math_equation_page.dart';
+import 'package:formula1/src/pages/math_equations_data_base_page.dart';
+import 'package:formula1/src/pages/settings_page.dart';
 import 'package:formula1/src/style/color_palette.dart';
 
 class NavigationDrawerTile extends StatelessWidget {
