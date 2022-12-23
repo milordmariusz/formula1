@@ -13,6 +13,7 @@ class EditMathEquationsPage extends StatefulWidget {
 
 class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
   final _textController = TextEditingController();
+  var shared = MathFormulas();
 
   @override
   void dispose() {
@@ -97,9 +98,11 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
     );
   }
 
-  void addMathFormula() {
+  Future<void> addMathFormula() async {
     if (_textController.text != '') {
-      MathFormulas().add(mathFormula: _textController.text);
+      var mathFormulasList = await shared.getMathFormulas();
+      mathFormulasList.add(_textController.text);
+      shared.saveMathFormulas(mathFormulasList);
     }
   }
 

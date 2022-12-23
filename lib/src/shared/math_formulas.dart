@@ -1,28 +1,18 @@
-import 'package:flutter/cupertino.dart';
+import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class MathFormulas extends ValueNotifier<List<String>> {
-  MathFormulas._sharedInstance() : super([]);
-
-  static final MathFormulas _shared = MathFormulas._sharedInstance();
-
-  factory MathFormulas() => _shared;
-
-  void add({required String mathFormula}) {
-    final mathFormulas = value;
-    mathFormulas.add(mathFormula);
-    notifyListeners();
+class MathFormulas {
+  Future<void> saveMathFormulas(List<String> mathFormulas) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('mathFormulas', jsonEncode(mathFormulas));
   }
 
-  void remove({required String mathFormula}) {
-    final mathFormulas = value;
-    if (mathFormulas.contains(mathFormula)) {
-      mathFormulas.remove(mathFormula);
-      notifyListeners();
-    }
+  Future<List<String>> getMathFormulas() async {
+    final prefs = await SharedPreferences.getInstance();
+    final List<dynamic> jsonData =
+        jsonDecode(prefs.getString('mathFormulas') ?? '[]');
+    return jsonData.map<String>((jsonItem) {
+      return jsonItem.toString();
+    }).toList();
   }
-
-  int get length => value.length;
-
-  Future<List<String>> mathFormulas() async => value;
 }
