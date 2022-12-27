@@ -78,6 +78,7 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
 
   Future<void> getMathFormulasFromStorage() async {
     mathFormulasList = await shared.getMathFormulas();
+    mathFormulasList = List.from(mathFormulasList.reversed);
     setState(() {});
   }
 

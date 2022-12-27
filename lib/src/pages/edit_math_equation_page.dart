@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:formula1/src/custom_widgets/keyboard/keyboard.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/strings/strings.dart';
@@ -8,18 +10,14 @@ class EditMathEquationsPage extends StatefulWidget {
   const EditMathEquationsPage({super.key});
 
   @override
-  State<StatefulWidget> createState() => _EditMathEquationsPageState();
+  State<StatefulWidget> createState() => EditMathEquationsPageState();
 }
 
-class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
-  final _textController = TextEditingController();
+class EditMathEquationsPageState extends State<EditMathEquationsPage> {
+  //static final textController = TextEditingController();
+  static ValueNotifier<String> equation = ValueNotifier<String>("");
   var shared = MathFormulas();
 
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +37,20 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
             const SizedBox(
               height: 50,
             ),
-            Container(
-              height: 100,
-              margin: const EdgeInsets.all(30),
-              child: TextField(
-                controller: _textController,
-              ),
+            ValueListenableBuilder<String>(
+              builder: (BuildContext context, String value, Widget? child) {
+                return Math.tex(equation.value);
+              },
+              valueListenable: equation,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            ValueListenableBuilder<String>(
+              builder: (BuildContext context, String value, Widget? child) {
+                return Text(equation.value);
+              },
+              valueListenable: equation,
             ),
             const SizedBox(
               height: 20,
@@ -65,7 +71,7 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
                       clearMathFormula();
                     },
                     child: Icon(
-                      size: 100,
+                      size: 20,
                       color: ColorPalette.lightGrey,
                       Icons.delete_forever,
                     ),
@@ -84,14 +90,15 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
                       addMathFormula();
                     },
                     child: Icon(
-                      size: 100,
+                      size: 20,
                       color: ColorPalette.lightGrey,
                       Icons.add_box,
                     ),
                   ),
                 ),
               ],
-            )
+            ),
+            const Keyboard(),
           ],
         ),
       ),
@@ -99,14 +106,14 @@ class _EditMathEquationsPageState extends State<EditMathEquationsPage> {
   }
 
   Future<void> addMathFormula() async {
-    if (_textController.text != '') {
+    if (equation.value != '') {
       var mathFormulasList = await shared.getMathFormulas();
-      mathFormulasList.add(_textController.text);
+      mathFormulasList.add(equation.value);
       shared.saveMathFormulas(mathFormulasList);
     }
   }
 
   void clearMathFormula() {
-    _textController.text = '';
+    equation.value = '';
   }
 }
