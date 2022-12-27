@@ -32,14 +32,17 @@ class _KeyboardState extends State<Keyboard> {
                   children:
                       lettersThirdRow.map((e) => Flexible(child: e)).toList(),
                 ),
+                Row(
+                  children:
+                      lettersFourthRow.map((e) => Flexible(child: e)).toList(),
+                ),
               ],
             );
           } else {
             return Column(
               children: [
                 Row(
-                  children:
-                      numbers.map((e) => Flexible(child: e)).toList(),
+                  children: numbers.map((e) => Flexible(child: e)).toList(),
                 ),
                 Row(
                   children:
@@ -48,6 +51,10 @@ class _KeyboardState extends State<Keyboard> {
                 Row(
                   children:
                       symbolsSecondRow.map((e) => Flexible(child: e)).toList(),
+                ),
+                Row(
+                  children:
+                      symbolsThirdRow.map((e) => Flexible(child: e)).toList(),
                 ),
               ],
             );

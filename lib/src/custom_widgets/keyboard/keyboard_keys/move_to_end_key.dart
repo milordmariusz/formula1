@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:formula1/src/pages/edit_math_equation_page.dart';
 
-class BackspaceKey extends StatelessWidget {
+class MoveToEndKey extends StatelessWidget {
   final Color currentColor;
 
-  const BackspaceKey(
-      {Key? key,
-        this.currentColor = Colors.black45})
+  const MoveToEndKey({Key? key, this.currentColor = Colors.black45})
       : super(key: key);
 
   @override
@@ -17,24 +14,17 @@ class BackspaceKey extends StatelessWidget {
       child: InkWell(
         onTap: () {
           var str = EditMathEquationsPageState.equation.value;
-          var cursour = EditMathEquationsPageState.cursourIndex.value;
-          if (str.isNotEmpty) {
-            if(cursour == str.length){
-              EditMathEquationsPageState.cursourIndex.value -= 1;
-            }
-            str = str.substring(0, str.length - 1);
-            EditMathEquationsPageState.equation.value = str;
-          }
+          EditMathEquationsPageState.cursourIndex.value = str.length;
         },
         child: AspectRatio(
-          aspectRatio: 2 / 3,
+          aspectRatio: 8 / 3,
           child: Container(
             decoration: BoxDecoration(
               color: currentColor,
               borderRadius: BorderRadius.circular(4.0),
             ),
             child: const Center(
-                child: Icon(Icons.arrow_back)
+              child: Icon(Icons.keyboard_double_arrow_right),
             ),
           ),
         ),

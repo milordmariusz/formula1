@@ -14,10 +14,9 @@ class EditMathEquationsPage extends StatefulWidget {
 }
 
 class EditMathEquationsPageState extends State<EditMathEquationsPage> {
-  //static final textController = TextEditingController();
   static ValueNotifier<String> equation = ValueNotifier<String>("");
+  static ValueNotifier<int> cursourIndex = ValueNotifier<int>(0);
   var shared = MathFormulas();
-
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +36,18 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
             const SizedBox(
               height: 50,
             ),
-            ValueListenableBuilder<String>(
-              builder: (BuildContext context, String value, Widget? child) {
-                return Math.tex(equation.value);
+            ValueListenableBuilder(
+              valueListenable: cursourIndex,
+              builder: (BuildContext context, int value, Widget? child) {
+                return ValueListenableBuilder<String>(
+                  builder: (BuildContext context, String value, Widget? child) {
+                    var equationString =
+                        "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
+                    return Math.tex(equationString);
+                  },
+                  valueListenable: equation,
+                );
               },
-              valueListenable: equation,
             ),
             const SizedBox(
               height: 20,
@@ -68,6 +74,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                       ),
                     ),
                     onPressed: () {
+                      cursourIndex.value = 0;
                       clearMathFormula();
                     },
                     child: Icon(

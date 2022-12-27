@@ -7,8 +7,8 @@ class LetterKey extends StatelessWidget {
 
   const LetterKey(
       {Key? key,
-        this.currentColor = Colors.black45,
-        required this.keyboardInput})
+      this.currentColor = Colors.black45,
+      required this.keyboardInput})
       : super(key: key);
 
   @override
@@ -17,7 +17,14 @@ class LetterKey extends StatelessWidget {
       padding: const EdgeInsets.all(4.0),
       child: InkWell(
         onTap: () {
-          EditMathEquationsPageState.equation.value += keyboardInput;
+          var str = EditMathEquationsPageState.equation.value;
+          var cursour = EditMathEquationsPageState.cursourIndex.value;
+          str = str.substring(0, cursour) +
+              keyboardInput +
+              str.substring(cursour, str.length);
+          EditMathEquationsPageState.equation.value = str;
+          EditMathEquationsPageState.cursourIndex.value += 1;
+
         },
         child: AspectRatio(
           aspectRatio: 2 / 3,

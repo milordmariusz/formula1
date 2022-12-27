@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_fork/flutter_math.dart';
+import 'package:formula1/src/functions/find_pattern_left.dart';
 import 'package:formula1/src/pages/edit_math_equation_page.dart';
 
-class BackspaceKey extends StatelessWidget {
+class LeftArrowKey extends StatelessWidget {
   final Color currentColor;
 
-  const BackspaceKey(
-      {Key? key,
-        this.currentColor = Colors.black45})
+  const LeftArrowKey({Key? key, this.currentColor = Colors.black45})
       : super(key: key);
 
   @override
@@ -18,24 +16,19 @@ class BackspaceKey extends StatelessWidget {
         onTap: () {
           var str = EditMathEquationsPageState.equation.value;
           var cursour = EditMathEquationsPageState.cursourIndex.value;
-          if (str.isNotEmpty) {
-            if(cursour == str.length){
-              EditMathEquationsPageState.cursourIndex.value -= 1;
-            }
-            str = str.substring(0, str.length - 1);
-            EditMathEquationsPageState.equation.value = str;
+          if (str.isNotEmpty && cursour != 0) {
+            EditMathEquationsPageState.cursourIndex.value -=
+                findPatternLeft(str.substring(0, cursour));
           }
         },
         child: AspectRatio(
-          aspectRatio: 2 / 3,
+          aspectRatio: 8 / 3,
           child: Container(
             decoration: BoxDecoration(
               color: currentColor,
               borderRadius: BorderRadius.circular(4.0),
             ),
-            child: const Center(
-                child: Icon(Icons.arrow_back)
-            ),
+            child: const Center(child: Icon(Icons.chevron_left)),
           ),
         ),
       ),
