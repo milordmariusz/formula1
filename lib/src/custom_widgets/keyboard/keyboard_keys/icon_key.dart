@@ -26,7 +26,30 @@ class IconKey extends StatelessWidget {
               keyboardInput +
               str.substring(cursour, str.length);
           EditMathEquationsPageState.equation.value = str;
-          EditMathEquationsPageState.cursourIndex.value += keyboardInput.length;
+          var newCursourPosition = 0;
+          if(keyboardInput=="\\frac{\\phantom{1}\\phantom{1}}{\\phantom{1}\\phantom{1}}"){
+            newCursourPosition = 17;
+          }
+          else if(keyboardInput=="^{}"){
+            newCursourPosition = 2;
+          }
+          else if(keyboardInput=="\\sqrt{}"){
+            newCursourPosition = 6;
+          }
+          else if(keyboardInput=="\\log_{}"){
+            newCursourPosition = 6;
+          }
+          else if(keyboardInput=="\\lim_{{}\\to{}}"){
+            newCursourPosition = 7;
+          }
+          else if(keyboardInput=="\\int_{}^{}"){
+            newCursourPosition = 6;
+          }
+          else{
+            newCursourPosition = keyboardInput.length;
+          }
+          EditMathEquationsPageState.cursourIndex.value += newCursourPosition;
+
         },
         child: AspectRatio(
           aspectRatio: 2 / 3,
