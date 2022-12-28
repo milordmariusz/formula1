@@ -18,73 +18,167 @@ class MathEquationsDataBasePage extends StatefulWidget {
 class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
   var shared = MathFormulas();
   List<String> mathFormulasList = [];
+  List<String> equationCategory = [];
+  String dropdownValue = 'Różne';
 
   @override
   void initState() {
-    getMathFormulasFromStorage();
+    getCategories();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    getMathFormulasFromStorage(dropdownValue);
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.mathEquationDataBasePageTitle)),
       drawer: const NavigationDrawer(
         selectedPage: 1,
       ),
-      body: ListView.builder(
-        padding: const EdgeInsets.only(top: 35),
-        itemCount: mathFormulasList.length,
-        itemBuilder: (context, index) {
-          return Dismissible(
-            key: Key(mathFormulasList[index]),
-            onDismissed: (direction) {
-              deleteMathFormula(index);
-            },
-            background: Container(color: Colors.red),
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: ColorPalette.blackMaterialColor.shade400,
-                      blurRadius: 25.0,
-                      offset: const Offset(0, 10),
-                    )
-                  ],
-                  color: ColorPalette.lightGreyMaterialColor.shade200,
-                  borderRadius: const BorderRadius.all(
-                    Radius.circular(20),
+      body: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              SizedBox(
+                width: 100,
+                child: DropdownButton<String>(
+                  isExpanded: true,
+                  value: dropdownValue,
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  underline: Container(
+                    height: 2,
+                    color: Colors.white,
                   ),
-                ),
-                width: double.infinity,
-                height: 150,
-                child: Align(
-                  alignment: const Alignment(-0.9, 0),
-                  child: TeXView(
-                    child: TeXViewDocument(
-                      "\$\$${mathFormulasList[index]}\$\$",
-                    ),
-                  ),
+                  onChanged: (String? value) {
+                    setState(() {
+                      dropdownValue = value!;
+                    });
+                  },
+                  items: equationCategory
+                      .map<DropdownMenuItem<String>>((String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
                 ),
               ),
+              ElevatedButton(
+                  onPressed: () {
+                    var categoryController = TextEditingController();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          scrollable: true,
+                          title: const Text("Dodaj kategorię"),
+                          content: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Form(
+                              child: TextFormField(
+                                controller: categoryController,
+                                decoration: const InputDecoration(
+                                  labelText: "Wpisz kategorię",
+                                  icon: Icon(Icons.edit),
+                                ),
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              child: const Text("Zapisz"),
+                              onPressed: () {
+                                setState(() {
+                                  saveCategory(categoryController.text);
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                            )
+                          ],
+                        );
+                      },
+                    ).then(
+                      (value) => () {
+                        categoryController.clear;
+                        setState(() {});
+                      },
+                    );
+                  },
+                  child: const Text("Dodaj kategorię"))
+            ],
+          ),
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.only(top: 35),
+              itemCount: mathFormulasList.length,
+              itemBuilder: (context, index) {
+                return Dismissible(
+                  key: Key(mathFormulasList[index]),
+                  onDismissed: (direction) {
+                    deleteMathFormula(index, dropdownValue);
+                  },
+                  background: Container(color: Colors.red),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                            color: ColorPalette.blackMaterialColor.shade400,
+                            blurRadius: 25.0,
+                            offset: const Offset(0, 10),
+                          )
+                        ],
+                        color: ColorPalette.lightGreyMaterialColor.shade200,
+                        borderRadius: const BorderRadius.all(
+                          Radius.circular(20),
+                        ),
+                      ),
+                      width: double.infinity,
+                      height: 150,
+                      child: Align(
+                        alignment: const Alignment(-0.9, 0),
+                        child: TeXView(
+                          child: TeXViewDocument(
+                            "\$\$${mathFormulasList[index]}\$\$",
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
-          );
-        },
+          ),
+        ],
       ),
     );
   }
 
-  Future<void> getMathFormulasFromStorage() async {
-    mathFormulasList = await shared.getMathFormulas();
+  Future<void> getMathFormulasFromStorage(key) async {
+    mathFormulasList = await shared.getMathFormulas(key);
     mathFormulasList = List.from(mathFormulasList.reversed);
     setState(() {});
   }
 
-  void deleteMathFormula(int index) {
+  Future<void> getCategories() async {
+    equationCategory = await shared.getMathCategories();
+    setState(() {});
+  }
+
+  Future<void> saveCategory(String category) async {
+    if (equationCategory.contains(category)) {
+      return;
+    }
+    equationCategory.add(category);
+    await shared.saveCategories(equationCategory);
+  }
+
+  void deleteMathFormula(int index, String key) {
     mathFormulasList.removeAt(index);
-    shared.saveMathFormulas(mathFormulasList);
+    shared.saveMathFormulas(mathFormulasList, key);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text('Wzór usunięty'),

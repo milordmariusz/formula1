@@ -130,11 +130,6 @@ class BackspaceKey extends StatelessWidget {
             var deleteInstructions =
                 deletePattern(leftSubEquation, rightSubEquation);
 
-            print(
-                leftSubEquation.substring(0, cursour - deleteInstructions[0]));
-            print(rightSubEquation.substring(
-                deleteInstructions[1], rightSubEquation.length));
-
             str =
                 leftSubEquation.substring(0, cursour - deleteInstructions[0]) +
                     rightSubEquation.substring(
