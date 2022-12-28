@@ -38,6 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   shared_preferences:
   flutter_tex:
+  flutter_math_fork:
 
 dev_dependencies:
   flutter_test:
