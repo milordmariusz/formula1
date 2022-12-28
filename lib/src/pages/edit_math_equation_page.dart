@@ -16,6 +16,7 @@ class EditMathEquationsPage extends StatefulWidget {
 class EditMathEquationsPageState extends State<EditMathEquationsPage> {
   static ValueNotifier<String> equation = ValueNotifier<String>("");
   static ValueNotifier<int> cursourIndex = ValueNotifier<int>(0);
+  List<String> equationCategory = [];
   var shared = MathFormulas();
 
   @override
@@ -43,7 +44,9 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                   builder: (BuildContext context, String value, Widget? child) {
                     var equationString =
                         "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
-                    return Math.tex(equationString);
+                    return SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Math.tex(equationString));
                   },
                   valueListenable: equation,
                 );
@@ -114,10 +117,96 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
 
   Future<void> addMathFormula() async {
     if (equation.value != '') {
-      var mathFormulasList = await shared.getMathFormulas();
-      mathFormulasList.add(equation.value);
-      shared.saveMathFormulas(mathFormulasList);
+      // var mathFormulasList = await shared.getMathFormulas('Różne');
+      // mathFormulasList.add(equation.value);
+      // shared.saveMathFormulas(mathFormulasList, 'Różne');
+      getCategories();
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            scrollable: true,
+            title: const Text("Zapisz wzór"),
+            content: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: SizedBox(
+                height: 400,
+                width: 250,
+                child: ListView.builder(
+                  itemCount: equationCategory.length,
+                  itemBuilder: (context, index) {
+                    return GestureDetector(
+                      onTap: () async {
+                        var mathFormulasList = await shared
+                            .getMathFormulas(equationCategory[index]);
+                        mathFormulasList.add(equation.value);
+                        shared.saveMathFormulas(
+                            mathFormulasList, equationCategory[index]);
+                        cursourIndex.value = 0;
+                        equation.value = "";
+                        Navigator.of(context).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(0, 5, 0, 5),
+                        child: SizedBox(
+                          width: 100,
+                          height: 100,
+                          child: Card(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            color: ColorPalette.lightGrey,
+                            elevation: 10,
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: <Widget>[
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 8.0),
+                                  child: ListTile(
+                                    title: Text(
+                                      equationCategory[index],
+                                      style: TextStyle(
+                                        color: ColorPalette.white,
+                                      ),
+                                    ),
+                                    leading: const Padding(
+                                      padding: EdgeInsets.only(top: 8.0),
+                                      child: Icon(Icons.person),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            ),
+            actions: [
+              ElevatedButton(
+                child: const Text("Anuluj"),
+                onPressed: () {
+                  setState(
+                    () {
+                      Navigator.of(context).pop();
+                    },
+                  );
+                },
+              )
+            ],
+          );
+        },
+      );
     }
+  }
+
+  Future<void> getCategories() async {
+    equationCategory = await shared.getMathCategories();
+    setState(() {});
   }
 
   void clearMathFormula() {
