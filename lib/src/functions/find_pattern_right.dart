@@ -12,6 +12,9 @@ int findPatternRight(String equation){
   else if (eqLen>=3 && equation.substring(0,3)=="}^{"){
     return 3;
   }
+  else if (eqLen>=2 && equation.substring(0,2)=="^{"){
+    return 2;
+  }
   else if (eqLen>=24 && equation.substring(0,24)=="\\phantom{1}}{\\phantom{1}"){
     return 24;
   }

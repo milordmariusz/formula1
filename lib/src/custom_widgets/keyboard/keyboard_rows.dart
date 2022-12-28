@@ -67,6 +67,7 @@ const List<Widget> symbolsFirstRow = [
   IconKey(keyboardInput: "\\pi", keyboardIconTeXString: "\\pi"),
   IconKey(keyboardInput: "<", keyboardIconTeXString: "<"),
   IconKey(keyboardInput: ">", keyboardIconTeXString: ">"),
+  IconKey(keyboardInput: "^{}", keyboardIconTeXString: "a^b"),
   IconKey(keyboardInput: "\\sqrt{}", keyboardIconTeXString: "\\sqrt a"),
   IconKey(keyboardInput: "\\%", keyboardIconTeXString: "\\%"),
   LetterKey(keyboardInput: "."),
