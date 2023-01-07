@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:formula1/src/functions/delete_pattern.dart';
 import 'package:formula1/src/pages/edit_math_equation_page.dart';
 
@@ -62,25 +61,25 @@ class BackspaceKey extends StatelessWidget {
               leftSubEquation =
                   leftSubEquation.substring(0, leftSubEquation.length - 17);
               rightSubEquation = "\\frac{\\phantom{1}$rightSubEquation";
-            } else if (leftSubEquation.length >= 2 &&
-                leftSubEquation.substring(
-                        leftSubEquation.length - 2, leftSubEquation.length) ==
-                    "}}") {
-              EditMathEquationsPageState.cursourIndex.value -= 2;
-              cursour -= 2;
-              leftSubEquation =
-                  leftSubEquation.substring(0, leftSubEquation.length - 2);
-              rightSubEquation = "}}$rightSubEquation";
-              if (leftSubEquation.length >= 5 &&
-                  leftSubEquation.substring(
-                          leftSubEquation.length - 5, leftSubEquation.length) ==
-                      "}\\to{") {
-                EditMathEquationsPageState.cursourIndex.value -= 5;
-                cursour -= 5;
-                leftSubEquation =
-                    leftSubEquation.substring(0, leftSubEquation.length - 5);
-                rightSubEquation = "}\\to{$rightSubEquation";
-              }
+            // } else if (leftSubEquation.length >= 2 &&
+            //     leftSubEquation.substring(
+            //             leftSubEquation.length - 2, leftSubEquation.length) ==
+            //         "}}") {
+            //   EditMathEquationsPageState.cursourIndex.value -= 2;
+            //   cursour -= 2;
+            //   leftSubEquation =
+            //       leftSubEquation.substring(0, leftSubEquation.length - 2);
+            //   rightSubEquation = "}}$rightSubEquation";
+            //   if (leftSubEquation.length >= 5 &&
+            //       leftSubEquation.substring(
+            //               leftSubEquation.length - 5, leftSubEquation.length) ==
+            //           "}\\to{") {
+            //     EditMathEquationsPageState.cursourIndex.value -= 5;
+            //     cursour -= 5;
+            //     leftSubEquation =
+            //         leftSubEquation.substring(0, leftSubEquation.length - 5);
+            //     rightSubEquation = "}\\to{$rightSubEquation";
+            //   }
             } else if (leftSubEquation.length >= 5 &&
                 leftSubEquation.substring(
                         leftSubEquation.length - 5, leftSubEquation.length) ==
@@ -121,11 +120,30 @@ class BackspaceKey extends StatelessWidget {
                 leftSubEquation.substring(
                         leftSubEquation.length - 2, leftSubEquation.length) !=
                     "{}") {
+              var leftBrakets = 0;
+              var rightBrakets = 1;
+              var counter= leftSubEquation.length;
+
               EditMathEquationsPageState.cursourIndex.value -= 1;
               cursour -= 1;
-              leftSubEquation =
-                  leftSubEquation.substring(0, leftSubEquation.length - 1);
+              leftSubEquation = leftSubEquation.substring(0, leftSubEquation.length - 1);
               rightSubEquation = "}$rightSubEquation";
+
+              while(leftBrakets != rightBrakets){
+                EditMathEquationsPageState.cursourIndex.value -= 1;
+                cursour -= 1;
+                leftSubEquation = leftSubEquation.substring(0, leftSubEquation.length - 1);
+                if(leftSubEquation[counter] == "}"){
+                  rightBrakets++;
+                }
+                else if(leftSubEquation[counter] == "{"){
+                  leftBrakets++;
+                }
+                counter--;
+              }
+
+
+
             }
             var deleteInstructions =
                 deletePattern(leftSubEquation, rightSubEquation);

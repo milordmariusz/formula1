@@ -72,10 +72,10 @@ List<int> deletePattern(String equationLeft, String equationRight) {
   } else if (eqLenLeft >= 2 &&
       equationLeft.substring(eqLenLeft - 2, eqLenLeft) == "^{" &&
       equationRight.substring(0, 1) == "}") {
-    if (eqLenLeft >= 3) {
-      return [3, 1];
-    }
     return [2, 1];
+  } else if (eqLenLeft >= 1 &&
+      equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "{") {
+    return [0, 0];
   } else {
     return [1, 0];
   }
