@@ -40,9 +40,9 @@ List<int> deletePattern(String equationLeft, String equationRight) {
       equationLeft.substring(eqLenLeft - 6, eqLenLeft) == "\\int_{" &&
       equationRight.substring(0, 4) == "}^{}") {
     return [6, 4];
-  } else if (eqLenRight >= 10 &&
-      equationRight.substring(0, 10) == "\\int_{}^{}") {
-    return [0, 10];
+  } else if (eqLenLeft >= 10 &&
+      equationLeft.substring(eqLenLeft - 10, eqLenLeft) == "\\int_{}^{}") {
+    return [10, 0];
   } else if (eqLenLeft >= 7 &&
       equationLeft.substring(eqLenLeft - 7, eqLenLeft) == "\\lim_{{" &&
       equationRight.substring(0, 7) == "}\\to{}}") {
@@ -60,14 +60,8 @@ List<int> deletePattern(String equationLeft, String equationRight) {
       equationRight.substring(0, 53) ==
           "\\frac{\\phantom{1}\\phantom{1}}{\\phantom{1}\\phantom{1}}") {
     return [0, 53];
-  } else if (eqLenLeft >= 10 &&
-      equationLeft.substring(eqLenLeft - 10, eqLenLeft) == "\\int_{}^{}") {
-    return [10, 0];
   } else if (eqLenLeft >= 3 &&
       equationLeft.substring(eqLenLeft - 3, eqLenLeft) == "^{}") {
-    if (eqLenLeft >= 4) {
-      return [4, 0];
-    }
     return [3, 0];
   } else if (eqLenLeft >= 2 &&
       equationLeft.substring(eqLenLeft - 2, eqLenLeft) == "^{" &&

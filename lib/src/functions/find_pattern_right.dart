@@ -21,9 +21,6 @@ int findPatternRight(String equation){
   else if (eqLen>=12 && equation.substring(0,12)=="\\phantom{1}}"){
     return 12;
   }
-  else if (eqLen>=2 && equation.substring(0,2)=="}}"){
-    return 2;
-  }
   else if (eqLen>=7 && equation.substring(0,7)=="\\lim_{{"){
     return 7;
   }

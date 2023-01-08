@@ -27,9 +27,6 @@ int findPatternLeft(String equation){
   else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="}{"){
     return 2;
   }
-  else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="}}"){
-    return 2;
-  }
   else if (eqLen>=7 && equation.substring(eqLen-7,eqLen)=="\\lim_{{"){
     return 7;
   }
