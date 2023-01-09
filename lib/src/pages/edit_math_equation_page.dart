@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:formula1/src/custom_widgets/keyboard/keyboard.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
@@ -30,8 +31,14 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 40,
+              child: IconButton(onPressed: () async {
+                ClipboardData? cdata = await Clipboard.getData(Clipboard.kTextPlain);
+                if(cdata!=null){
+                  equation.value = cdata.text!;
+                }
+              }, icon: Icon(Icons.copy))
             ),
             const Text(Strings.editMathEquationPageSubTitle),
             const SizedBox(
