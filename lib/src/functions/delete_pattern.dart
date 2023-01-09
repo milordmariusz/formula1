@@ -68,7 +68,9 @@ List<int> deletePattern(String equationLeft, String equationRight) {
       equationRight.substring(0, 1) == "}") {
     return [2, 1];
   } else if (eqLenLeft >= 1 &&
-      equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "{") {
+      (equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "}" ||
+      equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "{")) {
+
     return [0, 0];
   } else {
     return [1, 0];

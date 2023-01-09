@@ -61,26 +61,7 @@ class BackspaceKey extends StatelessWidget {
               leftSubEquation =
                   leftSubEquation.substring(0, leftSubEquation.length - 17);
               rightSubEquation = "\\frac{\\phantom{1}$rightSubEquation";
-            // } else if (leftSubEquation.length >= 2 &&
-            //     leftSubEquation.substring(
-            //             leftSubEquation.length - 2, leftSubEquation.length) ==
-            //         "}}") {
-            //   EditMathEquationsPageState.cursourIndex.value -= 2;
-            //   cursour -= 2;
-            //   leftSubEquation =
-            //       leftSubEquation.substring(0, leftSubEquation.length - 2);
-            //   rightSubEquation = "}}$rightSubEquation";
-            //   if (leftSubEquation.length >= 5 &&
-            //       leftSubEquation.substring(
-            //               leftSubEquation.length - 5, leftSubEquation.length) ==
-            //           "}\\to{") {
-            //     EditMathEquationsPageState.cursourIndex.value -= 5;
-            //     cursour -= 5;
-            //     leftSubEquation =
-            //         leftSubEquation.substring(0, leftSubEquation.length - 5);
-            //     rightSubEquation = "}\\to{$rightSubEquation";
-            //   }
-            } else if (leftSubEquation.length >= 5 &&
+            }  else if (leftSubEquation.length >= 5 &&
                 leftSubEquation.substring(
                         leftSubEquation.length - 5, leftSubEquation.length) ==
                     "}\\to{") {
@@ -122,7 +103,7 @@ class BackspaceKey extends StatelessWidget {
                     "{}") {
               var leftBrakets = 0;
               var rightBrakets = 1;
-              var counter= leftSubEquation.length;
+              
 
               EditMathEquationsPageState.cursourIndex.value -= 1;
               cursour -= 1;
@@ -130,20 +111,19 @@ class BackspaceKey extends StatelessWidget {
               rightSubEquation = "}$rightSubEquation";
 
               while(leftBrakets != rightBrakets){
-                EditMathEquationsPageState.cursourIndex.value -= 1;
-                cursour -= 1;
-                leftSubEquation = leftSubEquation.substring(0, leftSubEquation.length - 1);
-                if(leftSubEquation[counter] == "}"){
+                if(leftSubEquation.substring(leftSubEquation.length - 1, leftSubEquation.length) == "}"){
                   rightBrakets++;
                 }
-                else if(leftSubEquation[counter] == "{"){
+                else if(leftSubEquation.substring(leftSubEquation.length - 1, leftSubEquation.length) == "{"){
                   leftBrakets++;
                 }
-                counter--;
+                if(leftBrakets != rightBrakets) {
+                  EditMathEquationsPageState.cursourIndex.value -= 1;
+                  cursour -= 1;
+                  leftSubEquation =
+                      leftSubEquation.substring(0, leftSubEquation.length - 1);
+                }
               }
-
-
-
             }
             var deleteInstructions =
                 deletePattern(leftSubEquation, rightSubEquation);
