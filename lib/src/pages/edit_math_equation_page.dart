@@ -31,14 +31,51 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
-              height: 40,
-              child: IconButton(onPressed: () async {
-                ClipboardData? cdata = await Clipboard.getData(Clipboard.kTextPlain);
-                if(cdata!=null){
-                  equation.value = cdata.text!;
-                }
-              }, icon: Icon(Icons.copy))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                SizedBox(
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      ClipboardData? cdata =
+                          await Clipboard.getData(Clipboard.kTextPlain);
+                      String? cdataString = cdata?.text;
+                      if (cdataString != null) {
+                        equation.value = cdataString;
+                        cursourIndex.value = equation.value.length;
+                      }
+                    },
+                    child: Row(
+                      children: const [
+                        Text("Import"),
+                        Icon(Icons.copy),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 40,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Clipboard.setData(
+                        ClipboardData(text: equation.value),
+                      );
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          content: Text("Coppied to Clipboard"),
+                        ),
+                      );
+                    },
+                    child: Row(
+                      children: const [
+                        Text("Export"),
+                        Icon(Icons.copy_rounded),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
             const Text(Strings.editMathEquationPageSubTitle),
             const SizedBox(
