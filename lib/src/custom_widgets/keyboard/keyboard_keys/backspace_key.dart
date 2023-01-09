@@ -103,7 +103,7 @@ class BackspaceKey extends StatelessWidget {
                     "{}") {
               var leftBrakets = 0;
               var rightBrakets = 1;
-              
+
 
               EditMathEquationsPageState.cursourIndex.value -= 1;
               cursour -= 1;
