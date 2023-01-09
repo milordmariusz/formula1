@@ -50,6 +50,10 @@ List<int> deletePattern(String equationLeft, String equationRight) {
   } else if (eqLenRight >= 14 &&
       equationRight.substring(0, 14) == "\\lim_{{}\\to{}}") {
     return [0, 14];
+  } else if (eqLenLeft >= 6 &&
+      equationLeft.substring(eqLenLeft - 6, eqLenLeft) == "\\lim_{" &&
+      equationRight.substring(0, 1) == "}") {
+    return [6, 1];
   } else if (eqLenLeft >= 17 &&
       equationLeft.substring(eqLenLeft - 17, eqLenLeft) ==
           "\\frac{\\phantom{1}" &&

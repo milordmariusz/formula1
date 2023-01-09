@@ -18,7 +18,7 @@ class RightArrowKey extends StatelessWidget {
           var cursour = EditMathEquationsPageState.cursourIndex.value;
           if (str.isNotEmpty && cursour != str.length) {
             EditMathEquationsPageState.cursourIndex.value +=
-                findPatternRight(str.substring(cursour, str.length));
+                findPatternRight(str.substring(0, cursour),str.substring(cursour, str.length));
           }
         },
         child: AspectRatio(
