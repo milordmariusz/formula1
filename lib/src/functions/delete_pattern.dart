@@ -70,11 +70,33 @@ List<int> deletePattern(String equationLeft, String equationRight) {
   } else if (eqLenLeft >= 2 &&
       equationLeft.substring(eqLenLeft - 2, eqLenLeft) == "^{" &&
       equationRight.substring(0, 1) == "}") {
+    if(eqLenLeft >= 3 &&
+      equationLeft.substring(eqLenLeft - 3, eqLenLeft - 2) == "}") {
+      var leftBrakets = 0;
+      var rightBrakets = 0;
+      for (var counter = eqLenLeft - 2; counter > 0; counter--) {
+        if (equationLeft.substring(counter - 1, counter) == "}") {
+          rightBrakets++;
+        }
+        else if (equationLeft.substring(counter - 1, counter) == "{") {
+          leftBrakets++;
+        }
+        if (leftBrakets == rightBrakets) {
+          if (counter >= 5 &&
+              equationLeft.substring(counter - 5, counter) == "int_{") {
+            return [0, 0];
+          } else {
+            return [2, 1];
+          }
+        }
+      }
+      return [2, 1];
+    } else {
     return [2, 1];
+  }
   } else if (eqLenLeft >= 1 &&
       (equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "}" ||
-      equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "{")) {
-
+          equationLeft.substring(eqLenLeft - 1, eqLenLeft) == "{")) {
     return [0, 0];
   } else {
     return [1, 0];
