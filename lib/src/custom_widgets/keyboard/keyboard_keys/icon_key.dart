@@ -51,17 +51,36 @@ class IconKey extends StatelessWidget {
           EditMathEquationsPageState.cursourIndex.value += newCursourPosition;
 
         },
-        child: AspectRatio(
-          aspectRatio: 2 / 3,
-          child: Container(
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Center(
-              child: Math.tex(keyboardIconTeXString, mathStyle: MathStyle.display)
-            ),
-          ),
+        child: LayoutBuilder(
+          builder: (BuildContext, BoxConstraints) {
+            if (MediaQuery.of(context).orientation == Orientation.landscape) {
+              return AspectRatio(
+                aspectRatio: 4 / 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Center(
+                      child: Math.tex(keyboardIconTeXString, mathStyle: MathStyle.text)
+                  ),
+                ),
+              );
+            } else {
+              return AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Center(
+                      child: Math.tex(keyboardIconTeXString, mathStyle: MathStyle.text, textStyle: TextStyle(fontSize: MediaQuery.of(context).devicePixelRatio * 4 ),)
+                  ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );
