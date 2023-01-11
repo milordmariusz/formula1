@@ -75,6 +75,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                     height: 10,
                   ),
                   Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       const Flexible(child: Keyboard()),
                       const SizedBox(
