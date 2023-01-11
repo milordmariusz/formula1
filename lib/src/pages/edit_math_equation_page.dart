@@ -27,134 +27,322 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
       drawer: const NavigationDrawer(
         selectedPage: 0,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+      body: LayoutBuilder(
+        builder: (BuildContext, BoxConstraints) {
+          if (MediaQuery.of(context).orientation == Orientation.landscape) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SizedBox(
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      ClipboardData? cdata =
-                          await Clipboard.getData(Clipboard.kTextPlain);
-                      String? cdataString = cdata?.text;
-                      if (cdataString != null) {
-                        equation.value = cdataString;
-                        cursourIndex.value = equation.value.length;
-                      }
-                    },
-                    child: Row(
-                      children: const [
-                        Text("Import"),
-                        Icon(Icons.copy),
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 25,
+                        ),
+                        ValueListenableBuilder(
+                          valueListenable: cursourIndex,
+                          builder: (context, int value, Widget? child) {
+                            return ValueListenableBuilder<String>(
+                              builder: (context, String value, Widget? child) {
+                                var equationString =
+                                    "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
+                                return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Math.tex(equationString));
+                              },
+                              valueListenable: equation,
+                            );
+                          },
+                        ),
+                        ValueListenableBuilder<String>(
+                          builder: (context, String value, Widget? child) {
+                            return Text(equation.value);
+                          },
+                          valueListenable: equation,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
                 ),
-                SizedBox(
-                  height: 40,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      Clipboard.setData(
-                        ClipboardData(text: equation.value),
-                      );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text("Coppied to Clipboard"),
+                Column(
+                    children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: [
+                      const Flexible(child: Keyboard()),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            height: 30,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                cursourIndex.value = 0;
+                                clearMathFormula();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("Clear", style: TextStyle(fontSize: 15)),
+                                  Icon(
+                                    Icons.delete_forever_outlined,
+                                    size: 20.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: 30,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                addMathFormula();
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("Add", style: TextStyle(fontSize: 15)),
+                                  Icon(
+                                    Icons.add,
+                                    size: 20.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: 30,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                ClipboardData? cdata = await Clipboard.getData(
+                                    Clipboard.kTextPlain);
+                                String? cdataString = cdata?.text;
+                                if (cdataString != null) {
+                                  equation.value = cdataString;
+                                  cursourIndex.value = equation.value.length;
+                                }
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("Import ",
+                                      style: TextStyle(fontSize: 15)),
+                                  Icon(
+                                    Icons.copy,
+                                    size: 20.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 5,
+                          ),
+                          SizedBox(
+                            height: 30,
+                            width: 120,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                Clipboard.setData(
+                                  ClipboardData(text: equation.value),
+                                );
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("Coppied to Clipboard"),
+                                  ),
+                                );
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text("Export ",
+                                      style: TextStyle(fontSize: 15)),
+                                  Icon(
+                                    Icons.copy_rounded,
+                                    size: 20.0,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        width: 5,
+                      ),
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                ]),
+              ],
+            );
+          } else {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const SizedBox(
+                          height: 50,
                         ),
-                      );
-                    },
-                    child: Row(
-                      children: const [
-                        Text("Export"),
-                        Icon(Icons.copy_rounded),
+                        ValueListenableBuilder(
+                          valueListenable: cursourIndex,
+                          builder: (context, int value, Widget? child) {
+                            return ValueListenableBuilder<String>(
+                              builder: (context, String value, Widget? child) {
+                                var equationString =
+                                    "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
+                                return SingleChildScrollView(
+                                    scrollDirection: Axis.horizontal,
+                                    child: Math.tex(equationString));
+                              },
+                              valueListenable: equation,
+                            );
+                          },
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        ValueListenableBuilder<String>(
+                          builder: (context, String value, Widget? child) {
+                            return Text(equation.value);
+                          },
+                          valueListenable: equation,
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
                       ],
                     ),
                   ),
                 ),
-              ],
-            ),
-            const Text(Strings.editMathEquationPageSubTitle),
-            const SizedBox(
-              height: 50,
-            ),
-            ValueListenableBuilder(
-              valueListenable: cursourIndex,
-              builder: (BuildContext context, int value, Widget? child) {
-                return ValueListenableBuilder<String>(
-                  builder: (BuildContext context, String value, Widget? child) {
-                    var equationString =
-                        "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
-                    return SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Math.tex(equationString));
-                  },
-                  valueListenable: equation,
-                );
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            ValueListenableBuilder<String>(
-              builder: (BuildContext context, String value, Widget? child) {
-                return Text(equation.value);
-              },
-              valueListenable: equation,
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                SizedBox(
-                  child: TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: 35,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            cursourIndex.value = 0;
+                            clearMathFormula();
+                          },
+                          child: Row(
+                            children: const [
+                              Text("Clear", style: TextStyle(fontSize: 12)),
+                              Icon(
+                                Icons.delete_forever_outlined,
+                                size: 15.0,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    onPressed: () {
-                      cursourIndex.value = 0;
-                      clearMathFormula();
-                    },
-                    child: Icon(
-                      size: 20,
-                      color: ColorPalette.lightGrey,
-                      Icons.delete_forever,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  child: TextButton(
-                    style: ButtonStyle(
-                      shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                        RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18.0),
+                      SizedBox(
+                        height: 35,
+                        child: ElevatedButton(
+                          onPressed: () {
+                            addMathFormula();
+                          },
+                          child: Row(
+                            children: const [
+                              Text("Add", style: TextStyle(fontSize: 12)),
+                              Icon(
+                                Icons.add,
+                                size: 15.0,
+                              ),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    onPressed: () {
-                      addMathFormula();
-                    },
-                    child: Icon(
-                      size: 20,
-                      color: ColorPalette.lightGrey,
-                      Icons.add_box,
-                    ),
+                      SizedBox(
+                        height: 35,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            ClipboardData? cdata =
+                                await Clipboard.getData(Clipboard.kTextPlain);
+                            String? cdataString = cdata?.text;
+                            if (cdataString != null) {
+                              equation.value = cdataString;
+                              cursourIndex.value = equation.value.length;
+                            }
+                          },
+                          child: Row(
+                            children: const [
+                              Text("Import ", style: TextStyle(fontSize: 12)),
+                              Icon(
+                                Icons.copy,
+                                size: 15.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 35,
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            Clipboard.setData(
+                              ClipboardData(text: equation.value),
+                            );
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text("Coppied to Clipboard"),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: const [
+                              Text("Export ", style: TextStyle(fontSize: 12)),
+                              Icon(
+                                Icons.copy_rounded,
+                                size: 15.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  const Keyboard(),
+                  const SizedBox(
+                    height: 25,
+                  ),
+                ]),
               ],
-            ),
-            const Keyboard(),
-          ],
-        ),
+            );
+          }
+        },
       ),
     );
   }
