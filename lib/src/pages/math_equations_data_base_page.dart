@@ -106,7 +106,49 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                       },
                     );
                   },
-                  child: const Text("Dodaj kategorię"))
+                  child: const Text("Dodaj kategorię")),
+              ElevatedButton(
+                  onPressed: () {
+                    var categoryController = TextEditingController();
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          scrollable: true,
+                          title: const Text("Usuń kategorię i wzory "),
+                          content: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Form(
+                              child: TextFormField(
+                                controller: categoryController,
+                                decoration: const InputDecoration(
+                                  labelText: "Usuń kategorię",
+                                  icon: Icon(Icons.edit),
+                                ),
+                              ),
+                            ),
+                          ),
+                          actions: [
+                            ElevatedButton(
+                              child: const Text("Usuń"),
+                              onPressed: () {
+                                setState(() {
+                                  deleteCategory(categoryController.text);
+                                  Navigator.of(context).pop();
+                                });
+                              },
+                            )
+                          ],
+                        );
+                      },
+                    ).then(
+                          (value) => () {
+                        categoryController.clear;
+                        setState(() {});
+                      },
+                    );
+                  },
+                  child: const Text("Usuń kategorię")),
             ],
           ),
           Expanded(
@@ -173,6 +215,19 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
       return;
     }
     equationCategory.add(category);
+    await shared.saveCategories(equationCategory);
+  }
+
+  Future<void> deleteCategory(String category) async {
+    if (!equationCategory.contains(category) || category == 'Różne') {
+      return;
+    }
+    mathFormulasList.clear();
+    shared.saveMathFormulas(mathFormulasList, category);
+    if(category == dropdownValue){
+      dropdownValue = 'Różne';
+    }
+    equationCategory.removeAt(equationCategory.indexOf(category));
     await shared.saveCategories(equationCategory);
   }
 
