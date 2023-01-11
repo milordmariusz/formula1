@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:flutter_tex/flutter_tex.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
+import 'package:formula1/src/pages/edit_math_equation_page.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/strings/strings.dart';
 import 'package:formula1/src/style/color_palette.dart';
@@ -142,7 +144,7 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                         );
                       },
                     ).then(
-                          (value) => () {
+                      (value) => () {
                         categoryController.clear;
                         setState(() {});
                       },
@@ -164,28 +166,50 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                   background: Container(color: Colors.red),
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                            color: ColorPalette.blackMaterialColor.shade400,
-                            blurRadius: 25.0,
-                            offset: const Offset(0, 10),
-                          )
-                        ],
-                        color: ColorPalette.lightGreyMaterialColor.shade200,
-                        borderRadius: const BorderRadius.all(
-                          Radius.circular(20),
-                        ),
-                      ),
-                      width: double.infinity,
-                      height: 150,
-                      child: Align(
-                        alignment: const Alignment(-0.9, 0),
-                        child: TeXView(
-                          child: TeXViewDocument(
-                            "\$\$${mathFormulasList[index]}\$\$",
+                    child: InkWell(
+                      onTap: () {
+                        print("piesek");
+                        EditMathEquationsPageState.equation.value =
+                            mathFormulasList[index];
+                        EditMathEquationsPageState.cursourIndex.value =
+                            mathFormulasList[index].length;
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                            builder: (BuildContext context) {
+                              return EditMathEquationsPage();
+                            },
                           ),
+                        );
+                      },
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              color: ColorPalette.blackMaterialColor.shade400,
+                              blurRadius: 25.0,
+                              offset: const Offset(0, 10),
+                            )
+                          ],
+                          color: ColorPalette.lightGreyMaterialColor.shade200,
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(20),
+                          ),
+                        ),
+                        width: double.infinity,
+                        height: 150,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SingleChildScrollView(
+                              scrollDirection: Axis.horizontal,
+                              child: Math.tex(
+                                mathFormulasList[index],
+                                mathStyle: MathStyle.text,
+                                textStyle: TextStyle(color: ColorPalette.black),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -224,7 +248,7 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
     }
     mathFormulasList.clear();
     shared.saveMathFormulas(mathFormulasList, category);
-    if(category == dropdownValue){
+    if (category == dropdownValue) {
       dropdownValue = 'Różne';
     }
     equationCategory.removeAt(equationCategory.indexOf(category));
