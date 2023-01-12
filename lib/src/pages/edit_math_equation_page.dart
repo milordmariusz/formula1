@@ -32,8 +32,6 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
     setState(() {});
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -367,7 +365,6 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
     String equationToSend = equation.value;
     equationToSend = changeLaTeXToMathMl(equationToSend);
     Clipboard.setData(ClipboardData(text: equationToSend));
-    print(equationToSend);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(
         content: Text("Coppied to Clipboard"),
@@ -431,14 +428,12 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
             """<mrow><mi>ln<mspace width="0.1667em"></mspace></mi></mrow>""";
         index += 3;
       } else if (data.substring(index, index + 1).contains(RegExp(r'[0-9]'))) {
-
         int counter = 1;
         while (data.substring(index + counter, data.length).length >= 1 &&
             data[counter].toString().contains(RegExp(r'[0-9]'))) {
           counter += 1;
         }
         var number = data.substring(index, index + counter);
-
         parsedEquation += "<mn>$number</mn>";
         index += counter;
       } else if (data.substring(index, index + 1).contains(RegExp(r'[.+-]'))) {
@@ -498,8 +493,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         parsedEquation +=
             """<mfrac><mrow>$upperFracPart</mrow><mrow>$lowerFracPart</mrow></mfrac>""";
         index += wholeFracLength;
-      }
-      else if (data.substring(index, data.length).length >= 6 &&
+      } else if (data.substring(index, data.length).length >= 6 &&
           data.substring(index, index + 6) == "\\sqrt{") {
         String sqrtBody = data.substring(index + 6, data.length);
         int counter = 0;
@@ -519,14 +513,12 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         strUnderSqrt = parseBodyToMathMl(strUnderSqrt);
         parsedEquation += """<msqrt><mrow>$strUnderSqrt</mrow></msqrt>""";
         index += 7 + lengthOfSqrtBody;
-      }
-      else if (data.substring(index, data.length).length >= 2 &&
+      } else if (data.substring(index, data.length).length >= 2 &&
           data.substring(index, index + 2) == "^{") {
         String powBody = "";
         if (index == 0) {
           powBody = data.substring(index + 2, data.length);
-        }
-        else {
+        } else {
           powBody = data.substring(index + 2, data.length);
         }
         int counter = 0;
@@ -541,13 +533,12 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
           }
           counter += 1;
         } while (leftBracketCounter != rightBracketCounter);
-        strInPow = powBody.substring(0, counter-1);
+        strInPow = powBody.substring(0, counter - 1);
         int lengthOfPowBody = strInPow.length;
         strInPow = parseBodyToMathMl(strInPow);
         parsedEquation += """<msup><mi></mi><mrow>$strInPow</mrow></msup>""";
         index += 3 + lengthOfPowBody;
-      }
-      else if (data.substring(index, data.length).length >= 6 &&
+      } else if (data.substring(index, data.length).length >= 6 &&
           data.substring(index, index + 6) == "\\log_{") {
         String logBody = data.substring(index + 6, data.length);
         int counter = 0;
@@ -567,8 +558,84 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         strUnderLog = parseBodyToMathMl(strUnderLog);
         parsedEquation += """<msub><mi>log</mi>$strUnderLog</msub>""";
         index += 7 + lengthOfLogBody;
-      }
-      else {
+      } else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\lim_{") {
+        String limBody = data.substring(index + 6, data.length);
+        int counter = 0;
+        String leftLimPart = "";
+        String rightLimPart = "";
+        int leftBracketCounter = 0;
+        int rightBracketCounter = 0;
+        do {
+          if (limBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (limBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        leftLimPart = limBody.substring(1, counter - 1);
+        rightLimPart = limBody.substring(counter + 4, limBody.length);
+        int bottomCounter = 0;
+        leftBracketCounter = 1;
+        rightBracketCounter = 0;
+        do {
+          if (rightLimPart[bottomCounter] == "{") {
+            leftBracketCounter += 1;
+          } else if (rightLimPart[bottomCounter] == "}") {
+            rightBracketCounter += 1;
+          }
+          bottomCounter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        rightLimPart =
+            limBody.substring(counter + 4, counter + 4 + bottomCounter - 1);
+        print(leftLimPart);
+        print(rightLimPart);
+        int wholeFracLength = 14 + leftLimPart.length + rightLimPart.length;
+        print(wholeFracLength);
+        leftLimPart = parseBodyToMathMl(leftLimPart);
+        rightLimPart = parseBodyToMathMl(rightLimPart);
+        parsedEquation +=
+            """<munder><mi>lim</mi><mrow>$leftLimPart<mo>→</mo>$rightLimPart</mrow></munder>""";
+        index += wholeFracLength;
+      } else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\int_{") {
+        String intBody = data.substring(index + 6, data.length);
+        int counter = 0;
+        String leftIntPart = "";
+        String rightIntPart = "";
+        int leftBracketCounter = 1;
+        int rightBracketCounter = 0;
+        do {
+          if (intBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (intBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        leftIntPart = intBody.substring(0, counter - 1);
+        rightIntPart = intBody.substring(counter, intBody.length);
+        int bottomCounter = 1;
+        leftBracketCounter = 0;
+        rightBracketCounter = 0;
+        do {
+          if (rightIntPart[bottomCounter] == "{") {
+            leftBracketCounter += 1;
+          } else if (rightIntPart[bottomCounter] == "}") {
+            rightBracketCounter += 1;
+          }
+          bottomCounter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        rightIntPart =
+            intBody.substring(counter + 2, counter + bottomCounter - 1);
+        int wholeIntLength = 10 + leftIntPart.length + rightIntPart.length;
+        leftIntPart = parseBodyToMathMl(leftIntPart);
+        rightIntPart = parseBodyToMathMl(rightIntPart);
+        parsedEquation +=
+            """<msubsup><mo movablelimits="false">∫</mo>$leftIntPart$rightIntPart</msubsup>""";
+        index += wholeIntLength;
+      } else {
         String symbol = data.substring(index, index + 1);
         parsedEquation += "<mo>$symbol</mo>";
         index += 1;
