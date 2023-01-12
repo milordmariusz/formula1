@@ -89,8 +89,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                     ),
                   ),
                 ),
-                Column(
-                    children: [
+                Column(children: [
                   const SizedBox(
                     height: 10,
                   ),
@@ -333,14 +332,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                         height: 35,
                         child: ElevatedButton(
                           onPressed: () async {
-                            Clipboard.setData(
-                              ClipboardData(text: equation.value),
-                            );
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("Coppied to Clipboard"),
-                              ),
-                            );
+                            exportEquation();
                           },
                           child: Row(
                             children: const [
@@ -369,6 +361,220 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
         },
       ),
     );
+  }
+
+  void exportEquation() {
+    String equationToSend = equation.value;
+    equationToSend = changeLaTeXToMathMl(equationToSend);
+    Clipboard.setData(ClipboardData(text: equationToSend));
+    print(equationToSend);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(
+        content: Text("Coppied to Clipboard"),
+      ),
+    );
+  }
+
+  String changeLaTeXToMathMl(String data) {
+    String parsedEquation = "";
+    parsedEquation += "<math><mrow>";
+    parsedEquation += parseBodyToMathMl(data);
+    parsedEquation += "</mrow></math>";
+    return parsedEquation;
+  }
+
+  String parseBodyToMathMl(data) {
+    String parsedEquation = "";
+    int index = 0;
+    do {
+      if (data.substring(index, index + 1) == "(" ||
+          data.substring(index, index + 1) == ")") {
+        var symbol = data.substring(index, index + 1);
+        parsedEquation += '<mo form="prefix" stretchy="false">$symbol</mo>';
+        index += 1;
+      } else if (data.substring(index, index + 1) == "<") {
+        parsedEquation += """<mo>&lt;</mo>""";
+        index += 1;
+      } else if (data.substring(index, index + 1) == ">") {
+        parsedEquation += """<mo>&gt;</mo>""";
+        index += 1;
+      } else if (data.substring(index, data.length).length >= 2 &&
+          data.substring(index, index + 2) == "\\%") {
+        parsedEquation += "<mi>%</mi>";
+        index += 2;
+      } else if (data.substring(index, data.length).length >= 3 &&
+          data.substring(index, index + 3) == "\\pi") {
+        parsedEquation += "<mi>π</mi>";
+        index += 3;
+      } else if (data.substring(index, data.length).length >= 7 &&
+          data.substring(index, index + 7) == "\\degree") {
+        parsedEquation += "<mi>°</mi>";
+        index += 7;
+      } else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\infty") {
+        parsedEquation += "<mi>∞</mi>";
+        index += 6;
+      } else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\times") {
+        parsedEquation += "<mo>×</mo>";
+        index += 6;
+      } else if (data.substring(index, data.length).length >= 4 &&
+          data.substring(index, index + 4) == "\\div") {
+        parsedEquation += "<mo>÷</mo>";
+        index += 4;
+      } else if (data.substring(index, index + 1) == "=") {
+        parsedEquation += "<mo>=</mo>";
+        index += 1;
+      } else if (data.substring(index, data.length).length >= 3 &&
+          data.substring(index, index + 3) == "\\ln") {
+        parsedEquation +=
+            """<mrow><mi>ln<mspace width="0.1667em"></mspace></mi></mrow>""";
+        index += 3;
+      } else if (data.substring(index, index + 1).contains(RegExp(r'[0-9]'))) {
+
+        int counter = 1;
+        while (data.substring(index + counter, data.length).length >= 1 &&
+            data[counter].toString().contains(RegExp(r'[0-9]'))) {
+          counter += 1;
+        }
+        var number = data.substring(index, index + counter);
+
+        parsedEquation += "<mn>$number</mn>";
+        index += counter;
+      } else if (data.substring(index, index + 1).contains(RegExp(r'[.+-]'))) {
+        var symbol = data.substring(index, index + 1);
+        parsedEquation += "<mo>$symbol</mo>";
+        index += 1;
+      } else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\frac{") {
+        String fracBody = data.substring(index + 6, data.length);
+        int counter = 0;
+        String upperFracPart = "";
+        String lowerFracPart = "";
+        int leftBracketCounter = 2;
+        int rightBracketCounter = 1;
+        do {
+          if (fracBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (fracBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        upperFracPart = fracBody.substring(0, counter);
+        lowerFracPart = fracBody.substring(counter, fracBody.length);
+        int bottomCounter = 0;
+        leftBracketCounter = 0;
+        rightBracketCounter = 0;
+        do {
+          if (lowerFracPart[bottomCounter] == "{") {
+            leftBracketCounter += 1;
+          } else if (lowerFracPart[bottomCounter] == "}") {
+            rightBracketCounter += 1;
+          }
+          bottomCounter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        lowerFracPart = fracBody.substring(counter, counter + bottomCounter);
+        int wholeFracLength = 6 + upperFracPart.length + lowerFracPart.length;
+        if (upperFracPart.substring(0, 11) == "\\phantom{1}") {
+          upperFracPart = upperFracPart.substring(11, upperFracPart.length);
+        }
+        if (upperFracPart.substring(
+                upperFracPart.length - 12, upperFracPart.length) ==
+            "\\phantom{1}}") {
+          upperFracPart = upperFracPart.substring(0, upperFracPart.length - 12);
+        }
+
+        if (lowerFracPart.substring(0, 12) == "{\\phantom{1}") {
+          lowerFracPart = lowerFracPart.substring(12, lowerFracPart.length);
+        }
+        if (lowerFracPart.substring(
+                lowerFracPart.length - 12, lowerFracPart.length) ==
+            "\\phantom{1}}") {
+          lowerFracPart = lowerFracPart.substring(0, lowerFracPart.length - 12);
+        }
+        upperFracPart = parseBodyToMathMl(upperFracPart);
+        lowerFracPart = parseBodyToMathMl(lowerFracPart);
+        parsedEquation +=
+            """<mfrac><mrow>$upperFracPart</mrow><mrow>$lowerFracPart</mrow></mfrac>""";
+        index += wholeFracLength;
+      }
+      else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\sqrt{") {
+        String sqrtBody = data.substring(index + 6, data.length);
+        int counter = 0;
+        String strUnderSqrt = "";
+        int leftBracketCounter = 2;
+        int rightBracketCounter = 1;
+        do {
+          if (sqrtBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (sqrtBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        strUnderSqrt = sqrtBody.substring(0, counter - 1);
+        int lengthOfSqrtBody = strUnderSqrt.length;
+        strUnderSqrt = parseBodyToMathMl(strUnderSqrt);
+        parsedEquation += """<msqrt><mrow>$strUnderSqrt</mrow></msqrt>""";
+        index += 7 + lengthOfSqrtBody;
+      }
+      else if (data.substring(index, data.length).length >= 2 &&
+          data.substring(index, index + 2) == "^{") {
+        String powBody = "";
+        if (index == 0) {
+          powBody = data.substring(index + 2, data.length);
+        }
+        else {
+          powBody = data.substring(index + 2, data.length);
+        }
+        int counter = 0;
+        String strInPow = "";
+        int leftBracketCounter = 1;
+        int rightBracketCounter = 0;
+        do {
+          if (powBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (powBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        strInPow = powBody.substring(0, counter-1);
+        int lengthOfPowBody = strInPow.length;
+        strInPow = parseBodyToMathMl(strInPow);
+        parsedEquation += """<msup><mi></mi><mrow>$strInPow</mrow></msup>""";
+        index += 3 + lengthOfPowBody;
+      }
+      else if (data.substring(index, data.length).length >= 6 &&
+          data.substring(index, index + 6) == "\\log_{") {
+        String logBody = data.substring(index + 6, data.length);
+        int counter = 0;
+        String strUnderLog = "";
+        int leftBracketCounter = 1;
+        int rightBracketCounter = 0;
+        do {
+          if (logBody[counter] == "{") {
+            leftBracketCounter += 1;
+          } else if (logBody[counter] == "}") {
+            rightBracketCounter += 1;
+          }
+          counter += 1;
+        } while (leftBracketCounter != rightBracketCounter);
+        strUnderLog = logBody.substring(0, counter - 1);
+        int lengthOfLogBody = strUnderLog.length;
+        strUnderLog = parseBodyToMathMl(strUnderLog);
+        parsedEquation += """<msub><mi>log</mi>$strUnderLog</msub>""";
+        index += 7 + lengthOfLogBody;
+      }
+      else {
+        String symbol = data.substring(index, index + 1);
+        parsedEquation += "<mo>$symbol</mo>";
+        index += 1;
+      }
+    } while (index < data.length);
+    return parsedEquation;
   }
 
   Future<void> addMathFormula() async {
