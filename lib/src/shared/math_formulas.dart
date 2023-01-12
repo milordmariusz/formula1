@@ -29,4 +29,16 @@ class MathFormulas {
       return jsonItem.toString();
     }).toList();
   }
+
+  Future<void> saveLatexPreviewSetting(bool value) async {
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString("latexPreviewSetting", jsonEncode(value));
+  }
+
+  Future<bool> getLatexPreviewSetting() async {
+    final prefs = await SharedPreferences.getInstance();
+    final bool jsonData =
+    jsonDecode(prefs.getString("latexPreviewSetting") ?? 'false');
+    return jsonData;
+  }
 }
