@@ -330,7 +330,16 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                         height: 35,
                         child: ElevatedButton(
                           onPressed: () async {
-                            exportEquation();
+                            if(equation.value==""){
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("Brak danych do eksportu"),
+                                ),
+                              );
+                            }
+                            else{
+                              exportEquation();
+                            }
                           },
                           child: Row(
                             children: const [
@@ -363,12 +372,67 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
 
   void exportEquation() {
     String equationToSend = equation.value;
-    equationToSend = changeLaTeXToMathMl(equationToSend);
-    Clipboard.setData(ClipboardData(text: equationToSend));
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text("Coppied to Clipboard"),
-      ),
+    // equationToSend = changeLaTeXToMathMl(equationToSend);
+    // Clipboard.setData(ClipboardData(text: equationToSend));
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   const SnackBar(
+    //     content: Text("Coppied to Clipboard"),
+    //   ),
+    // );
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          scrollable: true,
+          title: const Text("Eksportuj wzór"),
+          actions: [
+            ElevatedButton(
+              child: const Text("Latex"),
+              onPressed: () {
+                setState(
+                  () {
+                    Clipboard.setData(ClipboardData(text: equationToSend));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Coppied to Clipboard"),
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+            ElevatedButton(
+              child: const Text("MathMl"),
+              onPressed: () {
+                setState(
+                  () {
+                    equationToSend = changeLaTeXToMathMl(equationToSend);
+                    Clipboard.setData(ClipboardData(text: equationToSend));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text("Coppied to Clipboard"),
+                      ),
+                    );
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            ),
+            ElevatedButton(
+              child: const Text("Anuluj"),
+              onPressed: () {
+                setState(
+                  () {
+                    Navigator.of(context).pop();
+                  },
+                );
+              },
+            )
+          ],
+        );
+      },
     );
   }
 
