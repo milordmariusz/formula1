@@ -19,6 +19,20 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
   static ValueNotifier<int> cursourIndex = ValueNotifier<int>(0);
   List<String> equationCategory = [];
   var shared = MathFormulas();
+  bool latexPreviewSetting = false;
+
+  @override
+  void initState() {
+    super.initState();
+    getLatexPreviewSetting();
+  }
+
+  Future<void> getLatexPreviewSetting() async {
+    latexPreviewSetting = await shared.getLatexPreviewSetting();
+    setState(() {});
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -56,11 +70,17 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                             );
                           },
                         ),
-                        ValueListenableBuilder<String>(
-                          builder: (context, String value, Widget? child) {
-                            return Text(equation.value);
-                          },
-                          valueListenable: equation,
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Visibility(
+                          visible: latexPreviewSetting,
+                          child: ValueListenableBuilder<String>(
+                            builder: (context, String value, Widget? child) {
+                              return Text(equation.value);
+                            },
+                            valueListenable: equation,
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
@@ -228,11 +248,14 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                         const SizedBox(
                           height: 20,
                         ),
-                        ValueListenableBuilder<String>(
-                          builder: (context, String value, Widget? child) {
-                            return Text(equation.value);
-                          },
-                          valueListenable: equation,
+                        Visibility(
+                          visible: latexPreviewSetting,
+                          child: ValueListenableBuilder<String>(
+                            builder: (context, String value, Widget? child) {
+                              return Text(equation.value);
+                            },
+                            valueListenable: equation,
+                          ),
                         ),
                         const SizedBox(
                           height: 20,
