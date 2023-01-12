@@ -67,90 +67,203 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                   }).toList(),
                 ),
               ),
-              ElevatedButton(
-                  onPressed: () {
-                    var categoryController = TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          scrollable: true,
-                          title: const Text("Dodaj kategorię"),
-                          content: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Form(
-                              child: TextFormField(
-                                controller: categoryController,
-                                decoration: const InputDecoration(
-                                  labelText: "Wpisz kategorię",
-                                  icon: Icon(Icons.edit),
+              LayoutBuilder(builder: (BuildContext, BoxConstraints) {
+                if (MediaQuery.of(context).orientation ==
+                    Orientation.landscape) {
+                  return ElevatedButton(
+                      onPressed: () {
+                        var categoryController = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              content: Container(
+                                width: 400,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2.0),
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Form(
+                                          child: TextFormField(
+                                            controller: categoryController,
+                                            decoration: const InputDecoration(
+                                              labelText: "Wpisz kategorię",
+                                              icon: Icon(Icons.edit),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 20,),
+                                      ElevatedButton(
+                                        child: const Text("Zapisz"),
+                                        onPressed: () {
+                                          setState(() {
+                                            saveCategory(categoryController.text);
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          actions: [
-                            ElevatedButton(
-                              child: const Text("Zapisz"),
-                              onPressed: () {
-                                setState(() {
-                                  saveCategory(categoryController.text);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            )
-                          ],
+                            );
+                          },
+                        ).then(
+                              (value) => () {
+                            categoryController.clear;
+                            setState(() {});
+                          },
                         );
                       },
-                    ).then(
-                      (value) => () {
-                        categoryController.clear;
-                        setState(() {});
-                      },
-                    );
-                  },
-                  child: const Text("Dodaj kategorię")),
-              ElevatedButton(
-                  onPressed: () {
-                    var categoryController = TextEditingController();
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return AlertDialog(
-                          scrollable: true,
-                          title: const Text("Usuń kategorię i wzory "),
-                          content: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Form(
-                              child: TextFormField(
-                                controller: categoryController,
-                                decoration: const InputDecoration(
-                                  labelText: "Usuń kategorię",
-                                  icon: Icon(Icons.edit),
+                      child: const Text("Dodaj kategorię"));
+                }
+                else{
+                  return ElevatedButton(
+                      onPressed: () {
+                        var categoryController = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              title: const Text("Dodaj kategorię"),
+                              content: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: TextFormField(
+                                    controller: categoryController,
+                                    decoration: const InputDecoration(
+                                      labelText: "Wpisz kategorię",
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                  ),
                                 ),
                               ),
-                            ),
-                          ),
-                          actions: [
-                            ElevatedButton(
-                              child: const Text("Usuń"),
-                              onPressed: () {
-                                setState(() {
-                                  deleteCategory(categoryController.text);
-                                  Navigator.of(context).pop();
-                                });
-                              },
-                            )
-                          ],
+                              actions: [
+                                ElevatedButton(
+                                  child: const Text("Zapisz"),
+                                  onPressed: () {
+                                    setState(() {
+                                      saveCategory(categoryController.text);
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        ).then(
+                              (value) => () {
+                            categoryController.clear;
+                            setState(() {});
+                          },
                         );
                       },
-                    ).then(
-                      (value) => () {
-                        categoryController.clear;
-                        setState(() {});
+                      child: const Text("Dodaj kategorię"));
+                }
+              }),
+              LayoutBuilder(builder: (BuildContext, BoxConstraints) {
+                if (MediaQuery.of(context).orientation ==
+                    Orientation.landscape) {
+                  return ElevatedButton(
+                      onPressed: () {
+                        var categoryController = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              content: Container(
+                                width: 400,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Row(
+                                    children: [
+                                      Flexible(
+                                        child: Form(
+                                          child: TextFormField(
+                                            controller: categoryController,
+                                            decoration: const InputDecoration(
+                                              labelText: "Wpisz kategorię do usunięcia",
+                                              icon: Icon(Icons.delete_forever),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      SizedBox(width: 20,),
+                                      ElevatedButton(
+                                        child: const Text("Usuń"),
+                                        onPressed: () {
+                                          setState(() {
+                                            deleteCategory(categoryController.text);
+                                            Navigator.of(context).pop();
+                                          });
+                                        },
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+
+                            );
+                          },
+                        ).then(
+                              (value) => () {
+                            categoryController.clear;
+                            setState(() {});
+                          },
+                        );
                       },
-                    );
-                  },
-                  child: const Text("Usuń kategorię")),
+                      child: const Text("Usuń kategorię"));
+                }
+                else{
+                  return ElevatedButton(
+                      onPressed: () {
+                        var categoryController = TextEditingController();
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              scrollable: true,
+                              title: const Text("Usuń kategorię i wzory "),
+                              content: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Form(
+                                  child: TextFormField(
+                                    controller: categoryController,
+                                    decoration: const InputDecoration(
+                                      labelText: "Usuń kategorię o nazwie",
+                                      icon: Icon(Icons.delete_forever),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              actions: [
+                                ElevatedButton(
+                                  child: const Text("Usuń"),
+                                  onPressed: () {
+                                    setState(() {
+                                      deleteCategory(categoryController.text);
+                                      Navigator.of(context).pop();
+                                    });
+                                  },
+                                )
+                              ],
+                            );
+                          },
+                        ).then(
+                              (value) => () {
+                            categoryController.clear;
+                            setState(() {});
+                          },
+                        );
+                      },
+                      child: const Text("Usuń kategorię"));
+                }
+              }),
             ],
           ),
           Expanded(
