@@ -24,21 +24,41 @@ class LetterKey extends StatelessWidget {
               str.substring(cursour, str.length);
           EditMathEquationsPageState.equation.value = str;
           EditMathEquationsPageState.cursourIndex.value += 1;
-
         },
-        child: AspectRatio(
-          aspectRatio: 2 / 3,
-          child: Container(
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: Center(
-              child: Text(
-                keyboardInput,
-              ),
-            ),
-          ),
+        child: LayoutBuilder(
+          builder: (BuildContext, BoxConstraints) {
+            if (MediaQuery.of(context).orientation == Orientation.landscape) {
+              return AspectRatio(
+                aspectRatio: 4 / 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      keyboardInput,
+                    ),
+                  ),
+                ),
+              );
+            } else {
+              return AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: Center(
+                    child: Text(
+                      keyboardInput,
+                    ),
+                  ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

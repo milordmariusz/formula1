@@ -15,17 +15,36 @@ class MoveToBeginningKey extends StatelessWidget {
         onTap: () {
           EditMathEquationsPageState.cursourIndex.value = 0;
         },
-        child: AspectRatio(
-          aspectRatio: 8 / 3,
-          child: Container(
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: const Center(
-              child: Icon(Icons.keyboard_double_arrow_left),
-            ),
-          ),
+        child: LayoutBuilder(
+          builder: (BuildContext, BoxConstraints) {
+            if (MediaQuery.of(context).orientation == Orientation.landscape) {
+              return AspectRatio(
+                aspectRatio: 6 / 1,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.keyboard_double_arrow_left),
+                  ),
+                ),
+              );
+            } else {
+              return AspectRatio(
+                aspectRatio: 8 / 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: const Center(
+                    child: Icon(Icons.keyboard_double_arrow_left),
+                  ),
+                ),
+              );
+            }
+          },
         ),
       ),
     );

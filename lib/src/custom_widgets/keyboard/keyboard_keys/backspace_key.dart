@@ -137,15 +137,33 @@ class BackspaceKey extends StatelessWidget {
             EditMathEquationsPageState.equation.value = str;
           }
         },
-        child: AspectRatio(
-          aspectRatio: 2 / 3,
-          child: Container(
-            decoration: BoxDecoration(
-              color: currentColor,
-              borderRadius: BorderRadius.circular(4.0),
-            ),
-            child: const Center(child: Icon(Icons.arrow_back)),
-          ),
+
+        child: LayoutBuilder(
+          builder: (BuildContext, BoxConstraints) {
+            if (MediaQuery.of(context).orientation == Orientation.landscape) {
+              return AspectRatio(
+                aspectRatio: 4 / 2,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: const Center(child: Icon(Icons.arrow_back)),
+                ),
+              );
+            } else {
+              return AspectRatio(
+                aspectRatio: 2 / 3,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: currentColor,
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  child: const Center(child: Icon(Icons.arrow_back)),
+                ),
+              );
+            }
+          },
         ),
       ),
     );
