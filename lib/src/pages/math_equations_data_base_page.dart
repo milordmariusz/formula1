@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:formula1/src/pages/edit_math_equation_page.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
@@ -314,7 +313,8 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                               child: Math.tex(
                                 mathFormulasList[index],
                                 mathStyle: MathStyle.text,
-                                textStyle: TextStyle(color: ColorPalette.black),
+                                textStyle: TextStyle(
+                                    fontSize: 20, color: ColorPalette.black),
                               ),
                             ),
                           ],
