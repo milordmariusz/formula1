@@ -62,7 +62,10 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                                     "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
                                 return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: Math.tex(equationString));
+                                    child: Math.tex(
+                                      equationString,
+                                      textStyle: TextStyle(fontSize: 16),
+                                    ));
                               },
                               valueListenable: equation,
                             );
@@ -237,7 +240,10 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                                     "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
                                 return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: Math.tex(equationString));
+                                    child: Math.tex(
+                                      equationString,
+                                      textStyle: TextStyle(fontSize: 16),
+                                    ));
                               },
                               valueListenable: equation,
                             );
