@@ -88,6 +88,33 @@ class BackspaceKey extends StatelessWidget {
               leftSubEquation =
                   leftSubEquation.substring(0, leftSubEquation.length - 6);
               rightSubEquation = "\\int_{$rightSubEquation";
+            } else if (leftSubEquation.length >= 4 &&
+                leftSubEquation.substring(
+                    leftSubEquation.length - 4, leftSubEquation.length) ==
+                    "}^{}") {
+                  var leftBrakets = 0;
+                  var rightBrakets = 0;
+
+                  for (var counter = leftSubEquation.length - 3; counter > 0; counter--) {
+                    if (leftSubEquation.substring(counter - 1, counter) == "}") {
+                      rightBrakets++;
+                    }
+                    else
+                    if (leftSubEquation.substring(counter - 1, counter) == "{") {
+                      leftBrakets++;
+                    }
+                    if (leftBrakets == rightBrakets) {
+                      if (counter >= 5 &&
+                          leftSubEquation.substring(counter - 5, counter) ==
+                              "int_{") {
+                        EditMathEquationsPageState.cursourIndex.value -= 4;
+                        cursour -= 4;
+                        leftSubEquation =
+                            leftSubEquation.substring(0, leftSubEquation.length - 4);
+                        rightSubEquation = "}^{}$rightSubEquation";
+                      }
+                    }
+                  }
             } else if (leftSubEquation.length >= 7 &&
                 leftSubEquation.substring(
                         leftSubEquation.length - 7, leftSubEquation.length) ==
