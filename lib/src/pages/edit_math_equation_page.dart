@@ -62,7 +62,10 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                                     "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
                                 return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: Math.tex(equationString));
+                                    child: Math.tex(
+                                      equationString,
+                                      textStyle: TextStyle(fontSize: 16),
+                                    ));
                               },
                               valueListenable: equation,
                             );
@@ -180,14 +183,15 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                             width: 120,
                             child: ElevatedButton(
                               onPressed: () async {
-                                Clipboard.setData(
-                                  ClipboardData(text: equation.value),
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text("Coppied to Clipboard"),
-                                  ),
-                                );
+                                if (equation.value == "") {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text("Brak danych do eksportu"),
+                                    ),
+                                  );
+                                } else {
+                                  exportEquation();
+                                }
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -236,7 +240,10 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                                     "${value.substring(0, cursourIndex.value)}|${value.substring(cursourIndex.value, value.length)}";
                                 return SingleChildScrollView(
                                     scrollDirection: Axis.horizontal,
-                                    child: Math.tex(equationString));
+                                    child: Math.tex(
+                                      equationString,
+                                      textStyle: TextStyle(fontSize: 16),
+                                    ));
                               },
                               valueListenable: equation,
                             );
@@ -330,14 +337,13 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                         height: 35,
                         child: ElevatedButton(
                           onPressed: () async {
-                            if(equation.value==""){
+                            if (equation.value == "") {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
                                   content: Text("Brak danych do eksportu"),
                                 ),
                               );
-                            }
-                            else{
+                            } else {
                               exportEquation();
                             }
                           },
@@ -372,14 +378,6 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
 
   void exportEquation() {
     String equationToSend = equation.value;
-    // equationToSend = changeLaTeXToMathMl(equationToSend);
-    // Clipboard.setData(ClipboardData(text: equationToSend));
-    // ScaffoldMessenger.of(context).showSnackBar(
-    //   const SnackBar(
-    //     content: Text("Coppied to Clipboard"),
-    //   ),
-    // );
-
     showDialog(
       context: context,
       builder: (BuildContext context) {

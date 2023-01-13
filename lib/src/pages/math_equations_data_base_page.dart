@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
-import 'package:flutter_tex/flutter_tex.dart';
 import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
 import 'package:formula1/src/pages/edit_math_equation_page.dart';
 import 'package:formula1/src/shared/math_formulas.dart';
@@ -95,12 +94,15 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(width: 20,),
+                                      SizedBox(
+                                        width: 20,
+                                      ),
                                       ElevatedButton(
                                         child: const Text("Zapisz"),
                                         onPressed: () {
                                           setState(() {
-                                            saveCategory(categoryController.text);
+                                            saveCategory(
+                                                categoryController.text);
                                             Navigator.of(context).pop();
                                           });
                                         },
@@ -112,15 +114,14 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                             );
                           },
                         ).then(
-                              (value) => () {
+                          (value) => () {
                             categoryController.clear;
                             setState(() {});
                           },
                         );
                       },
                       child: const Text("Dodaj kategorię"));
-                }
-                else{
+                } else {
                   return ElevatedButton(
                       onPressed: () {
                         var categoryController = TextEditingController();
@@ -156,7 +157,7 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                             );
                           },
                         ).then(
-                              (value) => () {
+                          (value) => () {
                             categoryController.clear;
                             setState(() {});
                           },
@@ -170,96 +171,89 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                     Orientation.landscape) {
                   return ElevatedButton(
                       onPressed: () {
-                        var categoryController = TextEditingController();
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              content: Container(
-                                width: 400,
-                                child: Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Row(
-                                    children: [
-                                      Flexible(
-                                        child: Form(
-                                          child: TextFormField(
-                                            controller: categoryController,
-                                            decoration: const InputDecoration(
-                                              labelText: "Wpisz kategorię do usunięcia",
-                                              icon: Icon(Icons.delete_forever),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(width: 20,),
-                                      ElevatedButton(
-                                        child: const Text("Usuń"),
-                                        onPressed: () {
-                                          setState(() {
-                                            deleteCategory(categoryController.text);
-                                            Navigator.of(context).pop();
-                                          });
-                                        },
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-
-                            );
-                          },
-                        ).then(
-                              (value) => () {
-                            categoryController.clear;
-                            setState(() {});
-                          },
-                        );
-                      },
-                      child: const Text("Usuń kategorię"));
-                }
-                else{
-                  return ElevatedButton(
-                      onPressed: () {
-                        var categoryController = TextEditingController();
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return AlertDialog(
-                              scrollable: true,
-                              title: const Text("Usuń kategorię i wzory "),
-                              content: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Form(
-                                  child: TextFormField(
-                                    controller: categoryController,
-                                    decoration: const InputDecoration(
-                                      labelText: "Usuń kategorię o nazwie",
-                                      icon: Icon(Icons.delete_forever),
+                        if (dropdownValue != "Różne") {
+                          var categoryController = TextEditingController();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                scrollable: true,
+                                title: const Text("Usuń kategorię",
+                                    textAlign: TextAlign.center),
+                                content: Container(
+                                  width: 400,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      child: const Text("Usuń"),
+                                      onPressed: () {
+                                        setState(() {
+                                          deleteCategory(dropdownValue);
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
                                     ),
                                   ),
                                 ),
-                              ),
-                              actions: [
-                                ElevatedButton(
-                                  child: const Text("Usuń"),
-                                  onPressed: () {
-                                    setState(() {
-                                      deleteCategory(categoryController.text);
-                                      Navigator.of(context).pop();
-                                    });
-                                  },
-                                )
-                              ],
-                            );
-                          },
-                        ).then(
-                              (value) => () {
-                            categoryController.clear;
-                            setState(() {});
-                          },
-                        );
+                              );
+                            },
+                          ).then(
+                            (value) => () {
+                              categoryController.clear;
+                              setState(() {});
+                            },
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Nie można usunąć kategorii Różne'),
+                            ),
+                          );
+                        }
+                      },
+                      child: const Text("Usuń kategorię"));
+                } else {
+                  return ElevatedButton(
+                      onPressed: () {
+                        if (dropdownValue != "Różne") {
+                          var categoryController = TextEditingController();
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return AlertDialog(
+                                scrollable: true,
+                                title: const Text("Usuń kategorię",
+                                    textAlign: TextAlign.center),
+                                content: Container(
+                                  width: 400,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: ElevatedButton(
+                                      child: const Text("Usuń"),
+                                      onPressed: () {
+                                        setState(() {
+                                          deleteCategory(dropdownValue);
+                                          Navigator.of(context).pop();
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            },
+                          ).then(
+                            (value) => () {
+                              categoryController.clear;
+                              setState(() {});
+                            },
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Nie można usunąć kategorii Różne'),
+                            ),
+                          );
+                        }
                       },
                       child: const Text("Usuń kategorię"));
                 }
@@ -319,7 +313,8 @@ class _MathEquationsDataBasePageState extends State<MathEquationsDataBasePage> {
                               child: Math.tex(
                                 mathFormulasList[index],
                                 mathStyle: MathStyle.text,
-                                textStyle: TextStyle(color: ColorPalette.black),
+                                textStyle: TextStyle(
+                                    fontSize: 20, color: ColorPalette.black),
                               ),
                             ),
                           ],

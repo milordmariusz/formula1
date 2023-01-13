@@ -51,7 +51,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: const [
                         Text(
                           Strings.settingsPageLatexPreview,
-                          style: TextStyle(fontSize: 20),
+                          style: TextStyle(fontSize: 15),
                         ),
                         CustomSwitch()
                       ],
@@ -122,7 +122,6 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 }
-
 
 class CustomSwitch extends StatefulWidget {
   const CustomSwitch({Key? key}) : super(key: key);
