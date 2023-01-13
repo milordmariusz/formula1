@@ -94,7 +94,6 @@ class BackspaceKey extends StatelessWidget {
                     "}^{}") {
                   var leftBrakets = 0;
                   var rightBrakets = 0;
-
                   for (var counter = leftSubEquation.length - 3; counter > 0; counter--) {
                     if (leftSubEquation.substring(counter - 1, counter) == "}") {
                       rightBrakets++;
@@ -103,16 +102,14 @@ class BackspaceKey extends StatelessWidget {
                     if (leftSubEquation.substring(counter - 1, counter) == "{") {
                       leftBrakets++;
                     }
-                    if (leftBrakets == rightBrakets) {
-                      if (counter >= 5 &&
-                          leftSubEquation.substring(counter - 5, counter) ==
-                              "int_{") {
-                        EditMathEquationsPageState.cursourIndex.value -= 4;
-                        cursour -= 4;
-                        leftSubEquation =
-                            leftSubEquation.substring(0, leftSubEquation.length - 4);
-                        rightSubEquation = "}^{}$rightSubEquation";
-                      }
+                    if (leftBrakets == rightBrakets &&
+                      counter >= 5 &&
+                      leftSubEquation.substring(counter - 5, counter) == "int_{") {
+                      EditMathEquationsPageState.cursourIndex.value -= 4;
+                      cursour -= 4;
+                      leftSubEquation =
+                          leftSubEquation.substring(0, leftSubEquation.length - 4);
+                      rightSubEquation = "}^{}$rightSubEquation";
                     }
                   }
             } else if (leftSubEquation.length >= 7 &&
