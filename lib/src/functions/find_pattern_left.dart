@@ -27,9 +27,6 @@ int findPatternLeft(String equation){
   else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="}{"){
     return 2;
   }
-  else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="}}"){
-    return 2;
-  }
   else if (eqLen>=7 && equation.substring(eqLen-7,eqLen)=="\\lim_{{"){
     return 7;
   }
@@ -59,6 +56,27 @@ int findPatternLeft(String equation){
   }
   else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\sqrt{"){
     return 6;
+  }
+  else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="}}"){
+    var leftBrakets = 0;
+    var rightBrakets = 0;
+
+    for(var counter = eqLen - 1; counter > 0; counter--){
+      if(equation.substring(counter - 1, counter) == "}"){
+        rightBrakets++;
+      }
+      else if(equation.substring(counter - 1, counter) == "{"){
+        leftBrakets++;
+      }
+      if(leftBrakets == rightBrakets) {
+        if(counter>=3 && equation.substring(counter-3, counter) == "to{") {
+          return 2;
+        } else {
+          return 1;
+        }
+      }
+    }
+    return 1;
   }
   else {
     return 1;

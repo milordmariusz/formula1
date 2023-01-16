@@ -435,6 +435,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
   }
 
   String changeLaTeXToMathMl(String data) {
+    data = data.replaceAll(" ", "");
     String parsedEquation = "";
     parsedEquation += "<math><mrow>";
     parsedEquation += parseBodyToMathMl(data);
