@@ -115,7 +115,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
-                                  Text("Clear", style: TextStyle(fontSize: 15)),
+                                  Text("Usuń", style: TextStyle(fontSize: 15)),
                                   Icon(
                                     Icons.delete_forever_outlined,
                                     size: 20.0,
@@ -137,7 +137,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: const [
-                                  Text("Add", style: TextStyle(fontSize: 15)),
+                                  Text("Dodaj", style: TextStyle(fontSize: 15)),
                                   Icon(
                                     Icons.add,
                                     size: 20.0,
@@ -284,7 +284,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                           },
                           child: Row(
                             children: const [
-                              Text("Clear", style: TextStyle(fontSize: 12)),
+                              Text("Usuń", style: TextStyle(fontSize: 12)),
                               Icon(
                                 Icons.delete_forever_outlined,
                                 size: 15.0,
@@ -301,7 +301,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
                           },
                           child: Row(
                             children: const [
-                              Text("Add", style: TextStyle(fontSize: 12)),
+                              Text("Dodaj", style: TextStyle(fontSize: 12)),
                               Icon(
                                 Icons.add,
                                 size: 15.0,
