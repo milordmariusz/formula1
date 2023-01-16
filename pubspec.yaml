@@ -41,6 +41,7 @@ dependencies:
   flutter_math_fork:
 
 dev_dependencies:
+  test:
   flutter_test:
     sdk: flutter
 
