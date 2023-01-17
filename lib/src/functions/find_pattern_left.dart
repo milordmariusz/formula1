@@ -3,8 +3,8 @@ int findPatternLeft(String equation){
   if (eqLen>=17 && equation.substring(eqLen-17,eqLen)=="\\frac{\\phantom{1}"){
     return 17;
   }
-  else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\infty"){
-    return 6;
+  else if (eqLen>=7 && equation.substring(eqLen-7,eqLen)=="\\infty "){
+    return 7;
   }
   else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\int_{"){
     return 6;
@@ -33,26 +33,26 @@ int findPatternLeft(String equation){
   else if (eqLen>=5 && equation.substring(eqLen-5,eqLen)=="}\\to{"){
     return 5;
   }
-  else if (eqLen>=3 && equation.substring(eqLen-3,eqLen)=="\\ln"){
-    return 3;
+  else if (eqLen>=4 && equation.substring(eqLen-4,eqLen)=="\\ln "){
+    return 4;
   }
   else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\log_{"){
     return 6;
   }
-  else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\times"){
-    return 6;
-  }
-  else if (eqLen>=4 && equation.substring(eqLen-4,eqLen)=="\\div"){
-    return 4;
-  }
-  else if (eqLen>=7 && equation.substring(eqLen-7,eqLen)=="\\degree"){
+  else if (eqLen>=7 && equation.substring(eqLen-7,eqLen)=="\\times "){
     return 7;
   }
-  else if (eqLen>=2 && equation.substring(eqLen-2,eqLen)=="\\%"){
-    return 2;
+  else if (eqLen>=5 && equation.substring(eqLen-5,eqLen)=="\\div "){
+    return 5;
   }
-  else if (eqLen>=3 && equation.substring(eqLen-3,eqLen)=="\\pi"){
+  else if (eqLen>=8 && equation.substring(eqLen-8,eqLen)=="\\degree "){
+    return 8;
+  }
+  else if (eqLen>=3 && equation.substring(eqLen-3,eqLen)=="\\% "){
     return 3;
+  }
+  else if (eqLen>=4 && equation.substring(eqLen-4,eqLen)=="\\pi "){
+    return 4;
   }
   else if (eqLen>=6 && equation.substring(eqLen-6,eqLen)=="\\sqrt{"){
     return 6;

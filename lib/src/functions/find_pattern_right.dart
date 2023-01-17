@@ -4,8 +4,8 @@ int findPatternRight(String equationL,String equationR){
   if (eqLenR>=17 && equationR.substring(0,17)=="\\frac{\\phantom{1}"){
     return 17;
   }
-  else if (eqLenR>=6 && equationR.substring(0,6)=="\\infty"){
-    return 6;
+  else if (eqLenR>=7 && equationR.substring(0,7)=="\\infty "){
+    return 7;
   }
   else if (eqLenR>=6 && equationR.substring(0,6)=="\\int_{"){
     return 6;
@@ -28,26 +28,26 @@ int findPatternRight(String equationL,String equationR){
   else if (eqLenR>=5 && equationR.substring(0,5)=="}\\to{"){
     return 5;
   }
-  else if (eqLenR>=3 && equationR.substring(0,3)=="\\ln"){
-    return 3;
+  else if (eqLenR>=4 && equationR.substring(0,4)=="\\ln "){
+    return 4;
   }
   else if (eqLenR>=6 && equationR.substring(0,6)=="\\log_{"){
     return 6;
   }
-  else if (eqLenR>=6 && equationR.substring(0,6)=="\\times"){
-    return 6;
-  }
-  else if (eqLenR>=4 && equationR.substring(0,4)=="\\div"){
-    return 4;
-  }
-  else if (eqLenR>=7 && equationR.substring(0,7)=="\\degree"){
+  else if (eqLenR>=7 && equationR.substring(0,7)=="\\times "){
     return 7;
   }
-  else if (eqLenR>=2 && equationR.substring(0,2)=="\\%"){
-    return 2;
+  else if (eqLenR>=5 && equationR.substring(0,5)=="\\div "){
+    return 5;
   }
-  else if (eqLenR>=3 && equationR.substring(0,3)=="\\pi"){
+  else if (eqLenR>=8 && equationR.substring(0,8)=="\\degree "){
+    return 8;
+  }
+  else if (eqLenR>=3 && equationR.substring(0,3)=="\\% "){
     return 3;
+  }
+  else if (eqLenR>=4 && equationR.substring(0,4)=="\\pi "){
+    return 4;
   }
   else if (eqLenR>=6 && equationR.substring(0,6)=="\\sqrt{"){
     return 6;
