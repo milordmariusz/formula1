@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_math_fork/flutter_math.dart';
 import 'package:formula1/src/custom_widgets/keyboard/keyboard.dart';
-import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
+import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart' as nd;
 import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/strings/strings.dart';
 import 'package:formula1/src/style/color_palette.dart';
@@ -36,7 +36,7 @@ class EditMathEquationsPageState extends State<EditMathEquationsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.editMathEquationPageTitle)),
-      drawer: const NavigationDrawer(
+      drawer: const nd.NavigationDrawer(
         selectedPage: 0,
       ),
       body: LayoutBuilder(

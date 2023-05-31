@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart';
+import 'package:formula1/src/custom_widgets/navigation_drawer/navigation_drawer.dart' as nd;
 import 'package:formula1/src/shared/math_formulas.dart';
 import 'package:formula1/src/strings/strings.dart';
 import 'package:formula1/src/style/color_palette.dart';
@@ -24,7 +24,7 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text(Strings.settingsPageTitle)),
-      drawer: const NavigationDrawer(
+      drawer: const nd.NavigationDrawer(
         selectedPage: 2,
       ),
       body: SingleChildScrollView(
